@@ -14,11 +14,8 @@
 <header class="header">
   <div class="container header__inner">
     <a class="brand" href="/" aria-label="{{ site.name }} — לעמוד הבית">
-      <img src="{{ site.logo }}" alt="{{ site.name }} — טכנאי מזגנים" width="160" height="46" fetchpriority="high">
-      <span class="brand__text">
-        <span class="brand__name">{{ site.name }}</span>
-        <span class="brand__tag">טכנאי מזגנים בפריסה ארצית</span>
-      </span>
+      <img src="{{ site.logo }}" alt="{{ site.name }} — טכנאי מזגנים בפריסה ארצית"
+           width="160" height="46" fetchpriority="high">
     </a>
 
     <nav class="nav" aria-label="ניווט ראשי">
@@ -52,7 +49,7 @@
 <div class="drawer" id="mobile-drawer">
   <div class="drawer__panel" role="dialog" aria-label="תפריט ניווט" aria-modal="true">
     <div class="drawer__head">
-      <span class="brand__name">{{ site.name }}</span>
+      <img src="{{ site.logo }}" alt="{{ site.name }}" width="140" height="40" class="drawer__logo">
       <button class="drawer__close" type="button" aria-label="סגירת תפריט">&times;</button>
     </div>
     <ul class="drawer__list">
