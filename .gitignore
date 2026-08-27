@@ -9,3 +9,6 @@ assets/_fonts_backup/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# build logs
+_source/*.log
