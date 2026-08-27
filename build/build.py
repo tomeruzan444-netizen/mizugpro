@@ -641,8 +641,29 @@ def write_llms_txt():
     open(os.path.join(DIST, "llms.txt"), "w", encoding="utf-8").write(text)
 
 
+def image_redirects():
+    """
+    Old /wp-content/uploads/... URLs are indexed in Google Images and linked
+    from elsewhere. Point each one at its migrated file so that equity moves
+    with it instead of turning into a 404 on cutover day.
+    """
+    path = os.path.join(SRC, "image-redirects.json")
+    if not os.path.exists(path):
+        return ""
+    rows = json.load(open(path, encoding="utf-8"))
+    if not rows:
+        return ""
+    lines = ["", "# migrated media — keep the old image URLs alive",
+             "<IfModule mod_alias.c>"]
+    for old, new in rows:
+        lines.append('  Redirect 301 "%s" "%s"' % (old, new))
+    lines.append("</IfModule>")
+    return "\n".join(lines) + "\n"
+
+
 def write_server_config():
-    open(os.path.join(DIST, ".htaccess"), "w", encoding="utf-8").write(HTACCESS)
+    open(os.path.join(DIST, ".htaccess"), "w", encoding="utf-8").write(
+        HTACCESS + image_redirects())
     open(os.path.join(DIST, "_headers"), "w", encoding="utf-8").write(NETLIFY_HEADERS)
     open(os.path.join(DIST, "nginx.conf.snippet"), "w", encoding="utf-8").write(NGINX)
 
