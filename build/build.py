@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from icons import icon  # noqa: E402
 import content_fixes  # noqa: E402
 import sidebar_groups  # noqa: E402
+import dedupe_city  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -37,6 +38,8 @@ manifest = json.load(open(_manifest_path, encoding="utf-8")) if os.path.exists(_
 
 # editorial pass: spelling, punctuation and logical fixes on the migrated copy
 pages = [content_fixes.apply(p) for p in pages]
+# national boilerplate moves to the page that owns it; local copy stays put
+pages = dedupe_city.apply(pages)
 
 by_path = {p["path"]: p for p in pages}
 
@@ -259,6 +262,22 @@ def fix_org(node):
     if node.get("@type") == "WebSite":
         node["name"] = site["name"]
         node.pop("alternateName", None)
+    if node.get("@type") == "Person":
+        # the author node still carried the username, the author archive URL and
+        # a Gravatar avatar from the site this one was cloned from
+        if node.get("name", "").strip().lower() in ("roofscha_admin", "admin"):
+            node["name"] = site["name"]
+        if "/author/" in (node.get("url") or ""):
+            node["url"] = BASE_URL + urllib.parse.quote("/אודות/")
+        img = node.get("image")
+        if isinstance(img, dict) and "gravatar" in json.dumps(img, ensure_ascii=False):
+            # reuse the logo node already in the graph instead of a stale avatar
+            node["image"] = {"@id": BASE_URL + "/#logo"}
+    for key in ("author", "creator", "publisher"):
+        ref = node.get(key)
+        if isinstance(ref, dict) and ref.get("name", "").strip().lower() in (
+                "roofscha_admin", "admin"):
+            ref["name"] = site["name"]
     if node.get("@type") in ("WebPage", "Article", "BlogPosting"):
         node.setdefault("speakable", {
             "@type": "SpeakableSpecification",
@@ -363,7 +382,11 @@ def rewrite_schema_urls(text):
         if local.startswith("/assets/"):
             return BASE_URL + urllib.parse.quote(local)
         return m.group(0)
-    return _SCHEMA_UPLOAD.sub(swap, text)
+    text = _SCHEMA_UPLOAD.sub(swap, text)
+    # the author-archive URL dies with WordPress; collapse it to a stable id
+    text = re.sub(r'https?://mizugpro\.co\.il/author/[^"\\]+?/?(?=")',
+                  BASE_URL + "/#author", text)
+    return text
 
 
 def schema_strings(p, crumbs):
@@ -843,6 +866,7 @@ def main():
     print("missing meta   :", len(report["missing_meta"]))
     print("schema repaired:", len(REPAIRED_SCHEMA), "pages")
     print("content fixes  :", len(content_fixes.CHANGES))
+    print("city de-dupe   :", len(dedupe_city.CHANGES), "blocks moved or trimmed")
     for rule, items in sorted(by_rule.items(), key=lambda kv: -len(kv[1])):
         print("    %-26s %d" % (rule, len(items)))
 

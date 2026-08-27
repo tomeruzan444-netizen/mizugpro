@@ -34,6 +34,10 @@ TEXT_RULES = [
     ("מותג זר בתוכן", re.compile(r"דודים וחוסכים"), "מיזוג פרו"),
     ("מותג זר בתוכן", re.compile(r"אלוף הגגות"), "מיזוג פרו"),
     ("VRF באותיות גדולות", re.compile(r"(?<![A-Za-z])vrf(?![A-Za-z])"), "VRF"),
+    ("ללמילוי → למילוי", re.compile(r"ללמילוי"), "למילוי"),
+    ("איזור → אזור", re.compile(r"(?<![א-ת])([בלמכשוה]?)איזור"), "\g<1>אזור"),
+    # a word repeated back to back is always a slip, never emphasis here
+    ("מילה כפולה", re.compile(r"(?<![א-ת])([א-ת]{2,})\s+\1(?![א-ת])"), "\g<1>"),
     # the live site printed two different phone numbers; this is the wrong one
     ("מספר טלפון שגוי", re.compile(r"0?33820823"), "033820923"),
     ("פרוייקט → פרויקט", re.compile(r"פרוייקט"), "פרויקט"),
@@ -107,6 +111,45 @@ def fix_schema(node, path):
     if isinstance(node, str) and not node.startswith(("http://", "https://")):
         return fix_text(node, path)
     return node
+
+# One figure per service, so the site stops quoting itself differently.
+#
+# מילוי גז appeared five ways: 350–550, 400–1000, 500–700, and 450–650 on the
+# shared price table that runs on 46 pages. The table figure is the site's own
+# dominant, scope-stated number ("כולל טיפול ואיתור דליפה פשוטה"), so the loose
+# quotes are aligned to it. The dedicated page keeps its 400–1,500 span, which
+# it explicitly describes as covering every system type — that is a wider
+# scope, not a contradiction. Change GAS_FILL_RANGE to reprice in one place.
+GAS_FILL_RANGE = "450 – 650"
+
+PRICE_ALIGNMENTS = {
+    "/תיקון-מזגנים/": [
+        (r"(מילוי גז מזגנים חדש</p></td><td>)350 – 550", r"\g<1>" + GAS_FILL_RANGE),
+    ],
+    "/מזגן-לא-מחמם/": [
+        (r"(<td>מילוי גז</td><td>)500-700", r"\g<1>450-650"),
+    ],
+    "/מזגן-מטפטף/": [
+        (r"(<strong>מילוי גז:</strong>\s*)400-1000", r"\g<1>450-650"),
+    ],
+    "/המזגן-לא-מקרר/": [
+        (r"(<td>בדיקה ומילוי גז</td><td>)250-350", r"\g<1>450-650"),
+    ],
+}
+
+# Years that dated the page rather than citing a source. Citations with a year
+# (electricity tariff, published studies) are left alone — a dated source is
+# correct practice; a price list that calls 2022 models "the new ones" is not.
+DATE_FIXES = {
+    "/מחירון-מזגנים/": [
+        (r"מהדגמים החדשים\s*[–-]\s*2022", "מהדגמים החדשים"),
+        (r"דגם\s*2022\s*אינוורטר", "דגם אינוורטר"),
+    ],
+    "/התקנת-מזגן-3-כוח-סוס/": [
+        (r"מעודכנים לשנת\s*2024", "מעודכנים לשנת 2026"),
+    ],
+}
+
 
 # Titles that were copied from another page and never rewritten.
 META_OVERRIDES = {
@@ -297,6 +340,20 @@ def apply(page):
 
         if t == "price_range":
             fix_price_range(b, path)
+
+        # per-page price alignment and date refresh, on the rendered text
+        for table, label in ((PRICE_ALIGNMENTS, "יישור מחיר סותר"),
+                             (DATE_FIXES, "תאריך מתיישן")):
+            for pattern, repl in table.get(path, []):
+                for key in ("html",):
+                    if isinstance(b.get(key), str):
+                        new = re.sub(pattern, repl, b[key])
+                        if new != b[key]:
+                            _log(path, label, b[key][:150], new[:150])
+                            b[key] = new
+                if t == "faq":
+                    for item in b["items"]:
+                        item["a"] = re.sub(pattern, repl, item["a"])
 
         for key in ("html",):
             if isinstance(b.get(key), str):

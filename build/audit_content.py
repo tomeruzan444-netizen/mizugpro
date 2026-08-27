@@ -15,8 +15,9 @@ pages = json.load(open(os.path.join(ROOT, "_source", "content.json"), encoding="
 
 import sys
 sys.path.insert(0, HERE)
-import content_fixes
-pages = [content_fixes.apply(p) for p in pages]   # audit the corrected copy
+import content_fixes, dedupe_city
+# audit exactly what ships: corrections applied, boilerplate already moved out
+pages = dedupe_city.apply([content_fixes.apply(p) for p in pages])
 
 findings = collections.OrderedDict()
 
