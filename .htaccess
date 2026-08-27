@@ -44,3 +44,37 @@ AddType image/webp .webp
 </IfModule>
 
 ErrorDocument 404 /404.html
+
+# migrated media — keep the old image URLs alive
+<IfModule mod_alias.c>
+  Redirect 301 "/wp-content/uploads/2024/06/אלקטרה-removebg-preview.png" "/assets/img/אלקטרה-removebg-preview.webp"
+  Redirect 301 "/wp-content/uploads/2024/06/טורנדו_400_על_100-removebg-preview.png" "/assets/img/טורנדו_400_על_100-removebg-preview.webp"
+  Redirect 301 "/wp-content/uploads/2024/06/לוגו-מיזוג-פרו.png" "/assets/img/לוגו-מיזוג-פרו.png"
+  Redirect 301 "/wp-content/uploads/2024/06/מיצובישי_מזגן-removebg-preview.png" "/assets/img/מיצובישי_מזגן-removebg-preview.webp"
+  Redirect 301 "/wp-content/uploads/2024/06/תדיראן-removebg-preview.png" "/assets/img/תדיראן-removebg-preview.webp"
+  Redirect 301 "/wp-content/uploads/2024/07/צוות-מיזוג-פרו-החדש.webp" "/assets/img/צוות-מיזוג-פרו-החדש.webp"
+  Redirect 301 "/wp-content/uploads/2024/07/מיזוג-פרו-טכנאי-מזגנים-1024x512.png" "/assets/img/מיזוג-פרו-טכנאי-מזגנים-1024x512.webp"
+  Redirect 301 "/wp-content/uploads/2024/07/מיזוג-פרו-טכנאי-מזגנים-300x150.png" "/assets/img/מיזוג-פרו-טכנאי-מזגנים-300x150.webp"
+  Redirect 301 "/wp-content/uploads/2024/07/מיזוג-פרו-טכנאי-מזגנים.png" "/assets/img/מיזוג-פרו-טכנאי-מזגנים.webp"
+  Redirect 301 "/wp-content/uploads/2024/10/התקנת-מזגן.png" "/assets/img/התקנת-מזגן.webp"
+  Redirect 301 "/wp-content/uploads/2024/10/טווח-מחירים-מיזוג-פרו-2.png" "/assets/img/טווח-מחירים-מיזוג-פרו-2.png"
+  Redirect 301 "/wp-content/uploads/2024/10/טכנאי-מזגנים.png" "/assets/img/טכנאי-מזגנים.webp"
+  Redirect 301 "/wp-content/uploads/2024/10/מיזוג-פרו-טכנאי-מזגנים.png" "/assets/img/מיזוג-פרו-טכנאי-מזגנים.webp"
+  Redirect 301 "/wp-content/uploads/2024/10/עינית-למזגן-1.png" "/assets/img/עינית-למזגן-1.webp"
+  Redirect 301 "/wp-content/uploads/2024/10/תיקון-מזגנים.png" "/assets/img/תיקון-מזגנים.webp"
+  Redirect 301 "/wp-content/uploads/2025/03/התקנת-מזגן-בממד-1024x557.png" "/assets/img/התקנת-מזגן-בממד-1024x557.webp"
+  Redirect 301 "/wp-content/uploads/2025/03/התקנת-מזגן-בממד.png" "/assets/img/התקנת-מזגן-בממד.webp"
+  Redirect 301 "/wp-content/uploads/2025/03/התקנת-מזגן-מיזוג-פרו-1024x508.png" "/assets/img/התקנת-מזגן-מיזוג-פרו-1024x508.webp"
+  Redirect 301 "/wp-content/uploads/2025/03/התקנת-מזגן-מיזוג-פרו.png" "/assets/img/התקנת-מזגן-מיזוג-פרו.webp"
+  Redirect 301 "/wp-content/uploads/2025/03/פרוייקט-התקנת-מזגן.png" "/assets/img/פרוייקט-התקנת-מזגן.webp"
+  Redirect 301 "/wp-content/uploads/2025/04/generate-4-air-conditioners-icons-100-on-100-pixel__6_-removebg-preview-300x300.png" "/assets/img/generate-4-air-conditioners-icons-100-on-100-pixel__6_-removebg-preview-300x300.webp"
+  Redirect 301 "/wp-content/uploads/2025/04/generate-4-air-conditioners-icons-100-on-100-pixel__6_-removebg-preview.png" "/assets/img/generate-4-air-conditioners-icons-100-on-100-pixel__6_-removebg-preview.webp"
+  Redirect 301 "/wp-content/uploads/2025/04/תרשים-מזגן-מיני-מרכזי-מיזוג-פרו.png" "/assets/img/תרשים-מזגן-מיני-מרכזי-מיזוג-פרו.webp"
+  Redirect 301 "/wp-content/uploads/2025/05/התקנת-מזגנים.png" "/assets/img/התקנת-מזגנים.webp"
+  Redirect 301 "/wp-content/uploads/2025/05/כמה-עולה-מזגן-לשעה-300x300.png" "/assets/img/כמה-עולה-מזגן-לשעה-300x300.png"
+  Redirect 301 "/wp-content/uploads/2025/05/כמה-עולה-מזגן-לשעה.png" "/assets/img/כמה-עולה-מזגן-לשעה.png"
+  Redirect 301 "/wp-content/uploads/2025/05/מחירון-מזגנים.png" "/assets/img/מחירון-מזגנים.webp"
+  Redirect 301 "/wp-content/uploads/2025/05/פירוק-מזגנים.png" "/assets/img/פירוק-מזגנים.webp"
+  Redirect 301 "/wp-content/uploads/2025/05/שלבי-התקנת-מזגן-מיזוג-פרו.png" "/assets/img/שלבי-התקנת-מזגן-מיזוג-פרו.webp"
+  Redirect 301 "/wp-content/uploads/2025/05/תיקון-מזגנים-1.png" "/assets/img/תיקון-מזגנים-1.webp"
+</IfModule>
