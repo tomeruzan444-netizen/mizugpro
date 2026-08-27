@@ -2,9 +2,13 @@
   <h2>השאירו פרטים ונחזור אליכם</h2>
   <p class="leadcard__sub">טכנאי מיזוג פרו יחזור אליכם תוך דקות — ייעוץ והצעת מחיר ללא עלות.</p>
 
-  <form data-lead method="post" action="/thank-you/">
+  <form data-lead method="post" action="/contact.php">
     <input type="hidden" name="referer_title" value="{{ page.h1|default(page.meta_title)|e }}">
     <input type="hidden" name="queried_id" value="{{ page.path }}">
+    {# spam traps: bots fill hidden fields and submit instantly #}
+    <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
+           class="visually-hidden">
+    <input type="hidden" name="started" value="" data-started>
 
     <div class="field">
       <label for="lf-name">שם מלא</label>

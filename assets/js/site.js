@@ -126,6 +126,9 @@
     });
 
     /* ---- lead form: light client-side phone check ------------------------ */
+    d.querySelectorAll("[data-started]").forEach(function (input) {
+      if (!input.value) input.value = Math.floor(Date.now() / 1000);
+    });
     d.querySelectorAll("form[data-lead]").forEach(function (form) {
       once(form, "submit", function (e) {
         var phone = form.querySelector('[name="phone"]');

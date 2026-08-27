@@ -768,6 +768,10 @@ def main():
             ],
         }, ensure_ascii=False, indent=1))
 
+    php = os.path.join(HERE, "form", "contact.php")
+    if os.path.exists(php):
+        shutil.copy2(php, os.path.join(DIST, "contact.php"))
+
     write_robots()
     write_llms_txt()
     write_server_config()
