@@ -1,0 +1,23 @@
+{
+ "name": "מיזוג פרו",
+ "short_name": "מיזוג פרו",
+ "description": "צריכים טכנאי מזגנים אמין ומקצועי? מיזוג פרו היא הכתובת שלכם לכל צורך. בין אם מדובר על תיקון מזגן או התקנת מזגן, אנחנו נגיע עד אליכם ונפתור את הבעיה!",
+ "start_url": "/",
+ "display": "standalone",
+ "lang": "he",
+ "dir": "rtl",
+ "background_color": "#F6FBFE",
+ "theme_color": "#04293A",
+ "icons": [
+  {
+   "src": "/assets/img/cropped-פאביקון-מיזוג-פרו-1-192x192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/assets/img/cropped-פאביקון-מיזוג-פרו-1-270x270.png",
+   "sizes": "270x270",
+   "type": "image/png"
+  }
+ ]
+}
