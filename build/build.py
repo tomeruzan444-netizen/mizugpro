@@ -349,6 +349,23 @@ def service_schema(p, page_url):
     return node
 
 
+_SCHEMA_UPLOAD = re.compile(r"https?://mizugpro\.co\.il(/wp-content/uploads/[^\"\\ ]+)")
+
+
+def rewrite_schema_urls(text):
+    """
+    Structured data still pointed at /wp-content/uploads/. Those paths die with
+    WordPress, and a search engine should not have to follow a redirect to
+    reach a logo — point the schema straight at the migrated file.
+    """
+    def swap(m):
+        local = local_img("https://mizugpro.co.il" + m.group(1))
+        if local.startswith("/assets/"):
+            return BASE_URL + urllib.parse.quote(local)
+        return m.group(0)
+    return _SCHEMA_UPLOAD.sub(swap, text)
+
+
 def schema_strings(p, crumbs):
     out = []
     for doc in p.get("schema", []):
@@ -391,6 +408,8 @@ def schema_strings(p, crumbs):
     service = service_schema(p, page_url)
     if service:
         out.append(json.dumps(service, ensure_ascii=False, separators=(",", ":")))
+
+    out = [rewrite_schema_urls(block) for block in out]
 
     if crumbs and len(crumbs) > 1:
         out.append(json.dumps({
