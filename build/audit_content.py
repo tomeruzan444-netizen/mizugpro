@@ -15,9 +15,9 @@ pages = json.load(open(os.path.join(ROOT, "_source", "content.json"), encoding="
 
 import sys
 sys.path.insert(0, HERE)
-import content_fixes, dedupe_city
+import content_fixes, dedupe_city, vat_note
 # audit exactly what ships: corrections applied, boilerplate already moved out
-pages = dedupe_city.apply([content_fixes.apply(p) for p in pages])
+pages = vat_note.apply(dedupe_city.apply([content_fixes.apply(p) for p in pages]))
 
 findings = collections.OrderedDict()
 
@@ -105,14 +105,17 @@ findings["inverted_ranges"] = bad_ranges
 vat = collections.Counter()
 for p in pages:
     t = TEXT[p["path"]]
-    if "מע\"מ" in t or "מעמ" in t:
+    excluding = re.search(r"ללא מע\"?מ|לא כולל(?:ים)? מע\"?מ|אינם כוללים מע\"?מ", t)
+    including = re.search(r"(?<!אינם )(?<!לא )כולל(?:ים)? מע\"?מ", t)
+    if excluding or including:
         vat["mentions VAT"] += 1
-        if "כולל מע" in t:
-            vat["says including"] += 1
-        if "ללא מע" in t or "לא כולל מע" in t:
+        if excluding:
             vat["says excluding"] += 1
+        if including and not excluding:
+            vat["says including"] += 1
     elif re.search(r"ש\"?ח", t):
         vat["prices with no VAT wording"] += 1
+        vat.setdefault("_silent", [])
 findings["vat_wording"] = dict(vat)
 
 

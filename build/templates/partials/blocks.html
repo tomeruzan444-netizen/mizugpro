@@ -84,6 +84,9 @@
   {%- if b.text %}<p>{{ b.text }}</p>{% endif %}
 </div>
 
+  {%- elif b.type == 'note' %}
+<p class="pricenote">{{ icon('info') }} {{ b.html }}</p>
+
   {%- elif b.type == 'custom_html' %}
 <div class="embed">{{ b.html|safe }}</div>
 

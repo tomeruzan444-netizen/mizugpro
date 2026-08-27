@@ -625,6 +625,14 @@ button { font: inherit; }
 .tablewrap tr:first-child td { background: linear-gradient(135deg, var(--blue-700), var(--blue-600)); color: #fff; }
 .tablewrap tr:first-child td a { color: #fff; text-decoration-color: rgba(255,255,255,.55); }
 
+.pricenote {
+  display: flex; align-items: center; gap: .5em;
+  background: var(--gold-50); border: 1px solid var(--gold-300);
+  border-radius: var(--r-md); padding: .7rem 1rem;
+  font-size: .95rem; font-weight: 700; color: var(--ink-2); margin: var(--sp-4) 0 var(--sp-5);
+}
+.pricenote svg { width: 18px; height: 18px; color: var(--gold-700); flex: none; }
+
 /* FAQ */
 .faq { display: grid; gap: var(--sp-3); margin: var(--sp-5) 0; }
 .faq__item { background: #fff; border: 1px solid var(--line-2); border-radius: var(--r-md); box-shadow: var(--sh-1); overflow: hidden; }

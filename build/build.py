@@ -14,6 +14,7 @@ from icons import icon  # noqa: E402
 import content_fixes  # noqa: E402
 import sidebar_groups  # noqa: E402
 import dedupe_city  # noqa: E402
+import vat_note  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -760,6 +761,7 @@ def main():
         model["og_image"] = (BASE_URL + urllib.parse.quote(local)
                              if local and local.startswith("/") else local)
         model["crumbs"] = crumbs_for(p)
+        model["body"] = vat_note.add(model["body"], p["path"])
         model["sidebar"] = sidebar_groups.sidebar_for(p["path"])
         model["related"] = RELATED.get(p["path"])
         model["related_label"] = RELATED_LABEL.get(p["path"])
