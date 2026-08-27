@@ -1,0 +1,95 @@
+{% macro stars(n) -%}
+<div class="review__stars" aria-label="דירוג {{ n }} מתוך 5">
+  {%- for i in range(5) %}<span class="{{ '' if i < n else 'off' }}">{{ icon('star') }}</span>{% endfor -%}
+</div>
+{%- endmacro %}
+
+{% macro review_card(r) -%}
+<article class="review">
+  {{ stars(r.stars) }}
+  <p class="review__text">{{ r.text }}</p>
+  <div class="review__author">
+    <span class="review__avatar" aria-hidden="true">{{ r.author[:1] }}</span>
+    <span>
+      <span class="review__name">{{ r.author }}</span>
+      {%- if r.location %}<span class="review__place">{{ r.location }}</span>{% endif %}
+    </span>
+  </div>
+</article>
+{%- endmacro %}
+
+{% macro render(blocks) -%}
+{%- for b in blocks %}
+  {%- if b.type == 'heading' %}
+<h{{ b.level }}>{{ b.html|safe }}</h{{ b.level }}>
+
+  {%- elif b.type == 'paragraph' %}
+<p>{{ b.html|safe }}</p>
+
+  {%- elif b.type == 'list' %}
+<{{ 'ol' if b.ordered else 'ul' }}>{{ b.html|safe }}</{{ 'ol' if b.ordered else 'ul' }}>
+
+  {%- elif b.type == 'table' %}
+<div class="tablewrap"><table>{{ b.html|safe }}</table></div>
+
+  {%- elif b.type == 'quote' %}
+<blockquote>{{ b.html|safe }}</blockquote>
+
+  {%- elif b.type == 'image' %}
+    {%- if b.href %}<a href="{{ b.href }}">{% endif -%}
+<img src="{{ b.src }}" alt="{{ b.alt|e }}"{% if b.width %} width="{{ b.width }}"{% endif %}{% if b.height %} height="{{ b.height }}"{% endif %} loading="lazy" decoding="async">
+    {%- if b.href %}</a>{% endif %}
+
+  {%- elif b.type == 'faq' %}
+<div class="faq">
+  {%- for item in b['items'] %}
+  <details class="faq__item">
+    <summary class="faq__q">{{ item.q }}</summary>
+    <div class="faq__a">{{ item.a|safe }}</div>
+  </details>
+  {%- endfor %}
+</div>
+
+  {%- elif b.type == 'reviews' %}
+<div class="reviews">
+  {%- for r in b['items'] %}{{ review_card(r) }}{% endfor %}
+</div>
+
+  {%- elif b.type == 'price_range' %}
+<div class="pricerange">
+  <div class="pricerange__points">
+    {%- for pt in b.points %}
+    <div class="pricerange__pt{{ ' pricerange__pt--mid' if loop.index == 2 else '' }}">
+      <div class="pricerange__label">{{ pt.label }}</div>
+      <div class="pricerange__value">{{ pt.value }}</div>
+    </div>
+    {%- endfor %}
+  </div>
+  {%- if b.note %}<p class="pricerange__note">{{ b.note }}</p>{% endif %}
+</div>
+
+  {%- elif b.type == 'share_chart' %}
+<ul class="chips">
+  {%- for item in b['items'] %}<li><span class="btn btn-outline btn-sm" style="cursor:default">{{ item }}</span></li>{% endfor %}
+</ul>
+
+  {%- elif b.type == 'linkgrid' %}
+<ul class="linkgrid">
+  {%- for l in b.links %}<li><a href="{{ l.href }}">{{ l.text }}</a></li>{% endfor %}
+</ul>
+
+  {%- elif b.type == 'card' %}
+<div class="card c-sky">
+  <h3>{% if b.href %}<a href="{{ b.href }}">{{ b.title }}</a>{% else %}{{ b.title }}{% endif %}</h3>
+  {%- if b.text %}<p>{{ b.text }}</p>{% endif %}
+</div>
+
+  {%- elif b.type == 'custom_html' %}
+<div class="embed">{{ b.html|safe }}</div>
+
+  {%- elif b.type == 'button' and b.href %}
+<p><a class="btn btn-blue" href="{{ b.href }}">{{ b.text }}</a></p>
+
+  {%- endif %}
+{%- endfor %}
+{%- endmacro %}

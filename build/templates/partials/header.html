@@ -1,0 +1,74 @@
+<div class="topbar">
+  <div class="container topbar__inner">
+    <ul class="topbar__list" style="list-style:none;margin:0;padding:0">
+      <li class="topbar__badge"><span class="topbar__dot"></span> {{ site.hours }} — כולל שבתות וחגים</li>
+      <li class="topbar__list--secondary" style="display:inline-flex"><a href="mailto:{{ site.email }}">{{ icon('mail') }} {{ site.email }}</a></li>
+    </ul>
+    <ul class="topbar__list topbar__list--secondary" style="list-style:none;margin:0;padding:0">
+      <li><a href="/אזורי-שירות/">{{ icon('pin') }} פריסה ארצית</a></li>
+      <li><a href="/מחירון-מזגנים/">{{ icon('tag') }} מחירון שקוף</a></li>
+    </ul>
+  </div>
+</div>
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="brand" href="/" aria-label="{{ site.name }} — לעמוד הבית">
+      <img src="{{ site.logo }}" alt="{{ site.name }} — טכנאי מזגנים" width="160" height="46" fetchpriority="high">
+      <span class="brand__text">
+        <span class="brand__name">{{ site.name }}</span>
+        <span class="brand__tag">טכנאי מזגנים בפריסה ארצית</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="ניווט ראשי">
+      <ul class="nav__list">
+        {%- for item in site.nav %}
+        <li class="nav__item">
+          <a class="nav__link" href="{{ item.href }}"{% if item.href == page.path %} aria-current="page"{% endif %}>
+            {{ item.text }}{% if item.children %}<span class="nav__caret">{{ icon('chevron') }}</span>{% endif %}
+          </a>
+          {%- if item.children %}
+          <ul class="nav__panel">
+            {%- for child in item.children %}
+            <li><a href="{{ child.href }}">{{ child.text }}</a></li>
+            {%- endfor %}
+          </ul>
+          {%- endif %}
+        </li>
+        {%- endfor %}
+      </ul>
+    </nav>
+
+    <div class="header__cta">
+      <a class="header__phone" href="tel:{{ site.phone_cta }}" style="display:none">{{ site.phone_cta }}</a>
+      <a class="btn btn-primary btn-sm" href="tel:{{ site.phone_cta }}">{{ icon('phone') }}<span>{{ site.phone_cta }}</span></a>
+    </div>
+
+    <button class="burger" type="button" aria-label="פתיחת תפריט" aria-expanded="false" aria-controls="mobile-drawer"><span></span></button>
+  </div>
+</header>
+
+<div class="drawer" id="mobile-drawer">
+  <div class="drawer__panel" role="dialog" aria-label="תפריט ניווט" aria-modal="true">
+    <div class="drawer__head">
+      <span class="brand__name">{{ site.name }}</span>
+      <button class="drawer__close" type="button" aria-label="סגירת תפריט">&times;</button>
+    </div>
+    <ul class="drawer__list">
+      {%- for item in site.nav %}
+      <li>
+        <a href="{{ item.href }}">{{ item.text }}</a>
+        {%- if item.children %}
+        <ul class="drawer__sub">
+          {%- for child in item.children %}
+          <li><a href="{{ child.href }}">{{ child.text }}</a></li>
+          {%- endfor %}
+        </ul>
+        {%- endif %}
+      </li>
+      {%- endfor %}
+    </ul>
+    <a class="btn btn-primary btn-block" href="tel:{{ site.phone_cta }}">{{ icon('phone') }} {{ site.phone_cta }}</a>
+  </div>
+</div>

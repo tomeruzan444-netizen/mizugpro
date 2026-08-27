@@ -1,0 +1,32 @@
+<div class="leadcard" id="lead-form">
+  <h2>השאירו פרטים ונחזור אליכם</h2>
+  <p class="leadcard__sub">טכנאי מיזוג פרו יחזור אליכם תוך דקות — ייעוץ והצעת מחיר ללא עלות.</p>
+
+  <form data-lead method="post" action="/thank-you/">
+    <input type="hidden" name="referer_title" value="{{ page.h1|default(page.meta_title)|e }}">
+    <input type="hidden" name="queried_id" value="{{ page.path }}">
+
+    <div class="field">
+      <label for="lf-name">שם מלא</label>
+      <input id="lf-name" name="form_fields[name]" type="text" autocomplete="name" placeholder="שם" required>
+    </div>
+
+    <div class="field">
+      <label for="lf-phone">מספר טלפון</label>
+      <input id="lf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="050-0000000" required>
+    </div>
+
+    <div class="field">
+      <label for="lf-city">עיר</label>
+      <input id="lf-city" name="form_fields[field_a1ac816]" type="text" autocomplete="address-level2" placeholder="עיר" required>
+    </div>
+
+    <div class="field">
+      <label for="lf-msg">איך נוכל לעזור?</label>
+      <textarea id="lf-msg" name="form_fields[field_311e598]" rows="3" placeholder="לדוגמה: המזגן בסלון לא מקרר"></textarea>
+    </div>
+
+    <button class="btn btn-primary btn-block" type="submit">{{ icon('bolt') }} שלח</button>
+    <p class="leadcard__note">או התקשרו ישירות: <a href="tel:{{ site.phone_cta }}"><strong>{{ site.phone_cta }}</strong></a></p>
+  </form>
+</div>

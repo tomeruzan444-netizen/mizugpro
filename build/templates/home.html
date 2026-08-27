@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% import "partials/blocks.html" as B %}
+
+{% block content %}
+
+<section class="hero">
+  {%- if site.hero_photo %}
+  <img class="hero__photo" src="{{ site.hero_photo.src }}" alt="{{ site.hero_photo.alt|e }}"
+       width="{{ site.hero_photo.w }}" height="{{ site.hero_photo.h }}"
+       fetchpriority="high" decoding="async">
+  {%- endif %}
+  <span class="hero__veil" aria-hidden="true"></span>
+  <div class="container">
+    <div class="hero__grid">
+      <div>
+        <span class="hero__eyebrow">{{ icon('sparkles') }} 15 שנה בתחום המיזוג</span>
+        <h1>{{ page.h1_html|safe }}</h1>
+        {%- if page.lead %}<p class="hero__lead">{{ page.lead|safe }}</p>{% endif %}
+        <div class="hero__actions">
+          <a class="btn btn-primary" href="tel:{{ site.phone_cta }}">{{ icon('phone') }} התקשרו עכשיו והתייעצו איתנו</a>
+          <a class="btn btn-ghost" href="/מחירון-מזגנים/">{{ icon('tag') }} מחירון מזגנים</a>
+        </div>
+        <ul class="hero__chips">
+          <li>{{ icon('check-circle') }} טכנאים מוסמכים בפריסה ארצית</li>
+          <li>{{ icon('clock') }} {{ site.hours }}</li>
+          <li>{{ icon('shield') }} אחריות מלאה על כל עבודה</li>
+        </ul>
+      </div>
+      <div>{% include "partials/leadform.html" %}</div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="stats">
+    {%- for s in page.stats %}
+    <div class="stat">
+      <div class="stat__num">{{ s.num }}</div>
+      <div class="stat__label">{{ s.label }}</div>
+    </div>
+    {%- endfor %}
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__eyebrow">השירותים שלנו</span>
+      <h2 class="section__title">כל מה שהמזגן שלכם צריך — במקום אחד</h2>
+      <p class="section__sub">התקנה, תיקון, פירוק ותחזוקה לכל סוגי המזגנים, עם מחיר שסוכם מראש.</p>
+    </div>
+    <div class="cards cards--4">
+      {%- for s in page.services %}
+      <article class="card card--link {{ s.color }}">
+        {%- if s.img %}
+        <span class="card__art"><img src="{{ s.img }}" alt="{{ s.alt|e }}" width="{{ s.w }}" height="{{ s.h }}" loading="lazy" decoding="async"></span>
+        {%- else %}
+        <span class="card__icon">{{ icon(s.icon) }}</span>
+        {%- endif %}
+        <h3><a href="{{ s.href }}">{{ s.title }}</a></h3>
+        <p>{{ s.text }}</p>
+        <span class="card__link">קראו עוד {{ icon('arrow') }}</span>
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section--white">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__eyebrow">למה מיזוג פרו</span>
+      <h2 class="section__title">{{ page.why_title }}</h2>
+    </div>
+    <div class="badges">
+      {%- for b in page.badges %}
+      <div class="badge {{ b.color }}">
+        <div class="badge__ring">{{ icon(b.icon) }}</div>
+        <h3>{{ b.title }}</h3>
+        <p>{{ b.text }}</p>
+      </div>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+{%- if page.steps %}
+<section class="section section--tint">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__eyebrow">התהליך</span>
+      <h2 class="section__title">{{ page.steps_title }}</h2>
+    </div>
+    <div class="steps">
+      {%- for s in page.steps %}
+      <div class="step">
+        <span class="step__num" aria-hidden="true"></span>
+        <h3>{{ s }}</h3>
+      </div>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+<section class="section">
+  <div class="container">
+    <div class="layout layout--home">
+      <article class="prose">
+        {{ B.render(page.body) }}
+      </article>
+      <aside class="rail">
+        {%- if page.projects %}
+        <div class="toc">
+          <h2>{{ icon('award') }} מהשטח</h2>
+          {%- for p in page.projects %}
+          <img src="{{ p.src }}" alt="{{ p.alt|e }}" width="{{ p.w }}" height="{{ p.h }}" loading="lazy" decoding="async" style="border-radius:14px;margin-bottom:.75rem">
+          {%- endfor %}
+        </div>
+        {%- endif %}
+        {%- if page.sidebar and page.sidebar.links %}
+        <nav class="sidelinks" aria-label="{{ page.sidebar.title }}">
+          <h2>{{ icon(page.sidebar.icon) }} {{ page.sidebar.title }}</h2>
+          <ul>
+            {%- for l in page.sidebar.links %}
+            <li><a href="{{ l.href }}">{{ l.text }}</a></li>
+            {%- endfor %}
+          </ul>
+        </nav>
+        {%- endif %}
+
+        <div class="railcta">
+          <h2>ייעוץ ללא עלות</h2>
+          <p>לא בטוחים איזה מזגן מתאים לכם? נשמח לייעץ בטלפון.</p>
+          <a class="btn btn-primary btn-block" href="tel:{{ site.phone_cta }}">{{ icon('phone') }} {{ site.phone_cta }}</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+{%- if page.tail.reviews %}
+<section class="section section--tint">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__eyebrow">{{ page.tail.reviews_label|default('המלצות לקוחות') }}</span>
+      <h2 class="section__title">לקוחות מספרים על מיזוג פרו</h2>
+    </div>
+    <div class="reviews">
+      {%- for r in page.tail.reviews %}{{ B.review_card(r) }}{% endfor %}
+    </div>
+    <p style="text-align:center;margin-top:2.5rem">
+      <a class="btn btn-outline" href="/הממליצים-שלנו/">{{ icon('quote') }} לכל ההמלצות</a>
+    </p>
+  </div>
+</section>
+{%- endif %}
+
+<section class="section">
+  <div class="container">
+    {%- if page.tail.areas %}
+    <div class="section__head">
+      <span class="section__eyebrow">פריסה ארצית</span>
+      <h2 class="section__title">{{ page.tail.areas_label|default('אזורי שירות') }}</h2>
+      <p class="section__sub">טכנאי מזגנים מיזוג פרו מגיעים מהצפון ועד הדרום — בחרו את האזור שלכם.</p>
+    </div>
+    <ul class="chips" style="justify-content:center;margin-bottom:4rem">
+      {%- for l in page.area_chips %}<li><a href="{{ l.href }}">{{ icon('pin') }} {{ l.text }}</a></li>{% endfor %}
+    </ul>
+    {%- endif %}
+
+    {%- if page.tail.services %}
+    <div class="section__head">
+      <span class="section__eyebrow">מדריכים ושירותים</span>
+      <h2 class="section__title">{{ page.tail.services_label|default('בין השירותים שלנו') }}</h2>
+    </div>
+    <ul class="linkgrid">
+      {%- for l in page.tail.services %}<li><a href="{{ l.href }}">{{ l.text }}</a></li>{% endfor %}
+    </ul>
+    {%- endif %}
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="ctaband">
+      <div>
+        <h2>{{ page.tail.contact_label|default('צרו איתנו קשר') }}</h2>
+        <p>מזגן שלא עובד הוא לא משהו שמחכה. חייגו ותקבלו טכנאי מוסמך במהירות.</p>
+      </div>
+      <div class="ctaband__actions">
+        <a class="btn btn-primary" href="tel:{{ site.phone_cta }}">{{ icon('phone') }} {{ site.phone_cta }}</a>
+        <a class="btn btn-ghost" href="/צרו-קשר/">{{ icon('mail') }} עמוד יצירת קשר</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

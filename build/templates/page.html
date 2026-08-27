@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% import "partials/blocks.html" as B %}
+
+{% block content %}
+
+<section class="pagehero">
+  {%- if site.hero_photo %}
+  <img class="hero__photo" src="{{ site.hero_photo.src }}" alt="{{ site.hero_photo.alt|e }}"
+       width="{{ site.hero_photo.w }}" height="{{ site.hero_photo.h }}"
+       fetchpriority="high" decoding="async">
+  {%- endif %}
+  <span class="hero__veil hero__veil--tight" aria-hidden="true"></span>
+  <div class="container">
+    {%- if page.crumbs %}
+    <nav class="crumbs" aria-label="מסלול ניווט">
+      <ol>
+        {%- for c in page.crumbs %}
+        <li{% if loop.last %} aria-current="page"{% endif %}>
+          {%- if not loop.last %}<a href="{{ c.href }}">{{ c.text }}</a><span class="sep">›</span>
+          {%- else %}{{ c.text }}{% endif %}
+        </li>
+        {%- endfor %}
+      </ol>
+    </nav>
+    {%- endif %}
+
+    <div class="pagehero__grid">
+      <div>
+        <h1>{{ page.h1 }}</h1>
+        {%- if page.lead %}<p class="pagehero__lead">{{ page.lead|safe }}</p>{% endif %}
+        <div class="pagehero__actions">
+          <a class="btn btn-primary" href="tel:{{ site.phone_cta }}">{{ icon('phone') }} התקשרו עכשיו והתייעצו איתנו</a>
+          <a class="btn btn-ghost" href="#lead-form">{{ icon('doc') }} השאירו פרטים</a>
+        </div>
+        <ul class="hero__chips" style="margin-top:1.5rem">
+          <li>{{ icon('check-circle') }} הגעה מהירה תוך שעות</li>
+          <li>{{ icon('shield') }} אחריות מלאה על כל עבודה</li>
+          <li>{{ icon('tag') }} מחיר סופי מראש</li>
+        </ul>
+      </div>
+      <div>{% include "partials/leadform.html" %}</div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+
+    {# content first in the source order, sidebar second: better for crawlers,
+       and in RTL the second column lands on the left of the screen #}
+    <article class="prose">
+      {{ B.render(page.body) }}
+    </article>
+
+    <aside class="rail">
+      <nav class="toc" aria-label="תוכן העמוד">
+        <h2>{{ icon('list') }} מה תוכלו למצוא בעמוד?</h2>
+        <ol data-toc></ol>
+      </nav>
+      {%- if page.sidebar and page.sidebar.links %}
+      <nav class="sidelinks" aria-label="{{ page.sidebar.title }}">
+        <h2>{{ icon(page.sidebar.icon) }} {{ page.sidebar.title }}</h2>
+        <ul>
+          {%- for l in page.sidebar.links %}
+          <li><a href="{{ l.href }}">{{ l.text }}</a></li>
+          {%- endfor %}
+        </ul>
+      </nav>
+      {%- endif %}
+
+      <div class="railcta">
+        <h2>צריכים טכנאי עכשיו?</h2>
+        <p>{{ site.hours }} — ייעוץ טלפוני ללא עלות</p>
+        <a class="btn btn-primary btn-block" href="tel:{{ site.phone_cta }}">{{ icon('phone') }} {{ site.phone_cta }}</a>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+{%- if page.tail.reviews %}
+<section class="section section--tint">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__eyebrow">{{ page.tail.reviews_label|default('המלצות לקוחות') }}</span>
+      <h2 class="section__title">לקוחות מספרים על מיזוג פרו</h2>
+      <p class="section__sub">כל חוות דעת נכתבה על ידי לקוח אמיתי שקיבל שירות מהטכנאים שלנו.</p>
+    </div>
+    <div class="reviews">
+      {%- for r in page.tail.reviews %}{{ B.review_card(r) }}{% endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{%- if page.tail.areas or page.tail.services %}
+<section class="section">
+  <div class="container">
+    {%- if page.tail.areas %}
+    <div class="section__head">
+      <span class="section__eyebrow">{{ icon('map')|safe }} פריסה ארצית</span>
+      <h2 class="section__title">{{ page.tail.areas_label|default('אזורי שירות') }}</h2>
+    </div>
+    <ul class="linkgrid" style="margin-bottom:4rem">
+      {%- for l in page.tail.areas %}<li><a href="{{ l.href }}">{{ l.text }}</a></li>{% endfor %}
+    </ul>
+    {%- endif %}
+
+    {%- if page.tail.services %}
+    <div class="section__head">
+      <span class="section__eyebrow">{{ icon('tools')|safe }} שירותים</span>
+      <h2 class="section__title">{{ page.tail.services_label|default('בין השירותים שלנו') }}</h2>
+    </div>
+    <ul class="linkgrid">
+      {%- for l in page.tail.services %}<li><a href="{{ l.href }}">{{ l.text }}</a></li>{% endfor %}
+    </ul>
+    {%- endif %}
+  </div>
+</section>
+{%- endif %}
+
+{%- if page.related %}
+<section class="section section--tint">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__eyebrow">קראו גם</span>
+      <h2 class="section__title">{{ page.related_label }}</h2>
+    </div>
+    <ul class="linkgrid">
+      {%- for l in page.related %}<li><a href="{{ l.href }}">{{ l.text }}</a></li>{% endfor %}
+    </ul>
+  </div>
+</section>
+{%- endif %}
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="ctaband">
+      <div>
+        <h2>{{ page.tail.contact_label|default('צרו איתנו קשר') }}</h2>
+        <p>טכנאי מזגנים מוסמך בדרך אליכם — {{ site.hours }}, בכל הארץ, במחיר שסוכם מראש.</p>
+      </div>
+      <div class="ctaband__actions">
+        <a class="btn btn-primary" href="tel:{{ site.phone_cta }}">{{ icon('phone') }} {{ site.phone_cta }}</a>
+        <a class="btn btn-ghost" href="/צרו-קשר/">{{ icon('mail') }} עמוד יצירת קשר</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="pagehero">
+  <div class="container">
+    <div class="pagehero__grid" style="grid-template-columns:1fr">
+      <div style="max-width:70ch">
+        <span class="hero__eyebrow">{{ icon('info') }} שגיאה 404</span>
+        <h1>העמוד שחיפשתם לא נמצא</h1>
+        <p class="pagehero__lead">
+          ייתכן שהכתובת השתנתה או שהוקלדה בטעות. אפשר לחזור לעמוד הבית,
+          לעבור לאזורי השירות, או פשוט להתקשר אלינו — נשמח לעזור.
+        </p>
+        <div class="pagehero__actions">
+          <a class="btn btn-primary" href="tel:{{ site.phone_cta }}">{{ icon('phone') }} {{ site.phone_cta }}</a>
+          <a class="btn btn-ghost" href="/">{{ icon('home') }} לעמוד הבית</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__eyebrow">אולי חיפשתם</span>
+      <h2 class="section__title">העמודים המבוקשים ביותר</h2>
+    </div>
+    <ul class="linkgrid">
+      {%- for col in site.footer_columns %}{% for l in col.links[:6] %}
+      <li><a href="{{ l.href }}">{{ l.text }}</a></li>
+      {%- endfor %}{% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}

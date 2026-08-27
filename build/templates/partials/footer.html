@@ -1,0 +1,59 @@
+<footer class="site-footer">
+  <div class="container">
+
+    {%- if site.brands %}
+    <div class="brands">
+      <span class="brands__label">מתקינים ומתקנים את כל המותגים המובילים</span>
+      <ul class="brands__list">
+        {%- for b in site.brands %}
+        <li><img src="{{ b.src }}" alt="{{ b.alt|e }}" width="{{ b.w }}" height="{{ b.h }}" loading="lazy" decoding="async"></li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endif %}
+
+    <div class="footer__grid">
+
+      <div class="footer__brand">
+        <img src="{{ site.logo }}" alt="{{ site.name }}" width="180" height="54" loading="lazy">
+        <p class="footer__about">
+          מיזוג פרו מספקת שירותי התקנה, תיקון, פירוק ותחזוקה לכל סוגי המזגנים —
+          עילי, מיני מרכזי, מרכזי, VRF ותעשייתי. פריסה ארצית, מחירים שקופים ואחריות מלאה על כל עבודה.
+        </p>
+        <ul class="footer__contact">
+          <li>{{ icon('phone') }}<a href="tel:{{ site.phone_footer }}">טלפון - {{ site.phone_footer }}</a></li>
+          <li>{{ icon('mail') }}<a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+          <li>{{ icon('pin') }}<span>כתובת- {{ site.address }}</span></li>
+          <li>{{ icon('clock') }}<span>{{ site.hours }}</span></li>
+        </ul>
+        <div class="footer__social">
+          {%- for s in site.socials %}
+          <a href="{{ s.href }}" rel="noopener nofollow" target="_blank" aria-label="{{ s.kind }}">{{ icon(s.kind) }}</a>
+          {%- endfor %}
+        </div>
+      </div>
+
+      {%- for col in site.footer_columns %}
+      <div>
+        <h2>{{ col.title }}</h2>
+        <ul>
+          {%- for link in col.links %}
+          <li><a href="{{ link.href }}">{{ link.text }}</a></li>
+          {%- endfor %}
+        </ul>
+      </div>
+      {%- endfor %}
+
+    </div>
+
+    <div class="footer__bottom">
+      <span>&copy; {{ year }} {{ site.name }} — כל הזכויות שמורות</span>
+      <nav class="footer__legal" aria-label="קישורי מדיניות">
+        <a href="/מדיניות-פרטיות/">מדיניות פרטיות</a>
+        <a href="/הצהרת-נגישות/">הצהרת נגישות</a>
+        <a href="/צרו-קשר/">צרו קשר</a>
+        <a href="/אזורי-שירות/">אזורי שירות</a>
+      </nav>
+    </div>
+  </div>
+</footer>

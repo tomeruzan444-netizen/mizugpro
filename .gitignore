@@ -1,0 +1,11 @@
+# python
+__pycache__/
+*.py[cod]
+
+# unsubsetted font copies the pipeline can re-download
+assets/_fonts_backup/
+
+# os junk
+.DS_Store
+Thumbs.db
+desktop.ini

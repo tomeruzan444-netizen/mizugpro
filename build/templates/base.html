@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{# --- metadata carried over from the live site, verbatim --- #}
+<title>{{ page.meta_title }}</title>
+{%- if page.meta_description %}
+<meta name="description" content="{{ page.meta_description|e }}">
+{%- endif %}
+{%- if page.robots %}
+<meta name="robots" content="{{ page.robots }}">
+{%- endif %}
+{%- if page.canonical %}
+<link rel="canonical" href="{{ page.canonical }}">
+{%- endif %}
+<meta property="og:locale" content="he_IL">
+<meta property="og:site_name" content="{{ site.name }}">
+{%- if page.og_type %}
+<meta property="og:type" content="{{ page.og_type }}">
+{%- endif %}
+{%- if page.og_title %}
+<meta property="og:title" content="{{ page.og_title|e }}">
+{%- endif %}
+{%- if page.og_description %}
+<meta property="og:description" content="{{ page.og_description|e }}">
+{%- endif %}
+{%- if page.canonical %}
+<meta property="og:url" content="{{ page.canonical }}">
+{%- endif %}
+{%- if page.og_image %}
+<meta property="og:image" content="{{ page.og_image }}">
+{%- endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#04293A">
+{%- if site.gsc_verification %}
+<meta name="google-site-verification" content="{{ site.gsc_verification }}">
+{%- endif %}
+
+{# self-hosted font + one stylesheet: no third-party requests at all #}
+<link rel="preload" href="/assets/fonts/assistant-hebrew-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/assistant-hebrew-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.min.css">
+{%- if site.hero_photo %}
+<link rel="preload" href="{{ site.hero_photo.src }}" as="image" fetchpriority="high">
+{%- endif %}
+<link rel="icon" href="/assets/img/cropped-פאביקון-מיזוג-פרו-1-32x32.png" sizes="32x32">
+<link rel="icon" href="/assets/img/cropped-פאביקון-מיזוג-פרו-1-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/assets/img/cropped-פאביקון-מיזוג-פרו-1-180x180.png">
+<link rel="manifest" href="/site.webmanifest">
+
+{%- if site.gtm_id %}
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','{{ site.gtm_id }}');</script>
+{%- endif %}
+
+{# apply saved accessibility preferences before first paint, so a visitor who
+   needs high contrast never sees a flash of the normal palette #}
+<script>try{var a=JSON.parse(localStorage.getItem("mizugpro:a11y"))||{};(a.on||[]).forEach(function(c){document.documentElement.classList.add("a11y-"+c)});if(a.step){document.documentElement.style.fontSize=(100+a.step*10)+"%"}}catch(e){}</script>
+
+{%- for block in page.schema %}
+<script type="application/ld+json">{{ block|safe }}</script>
+{%- endfor %}
+</head>
+<body class="{{ body_class|default('') }}">
+{%- if site.gtm_id %}
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ site.gtm_id }}"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+{%- endif %}
+<a class="skip-link" href="#main">דילוג לתוכן הראשי</a>
+
+{% include "partials/header.html" %}
+
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+
+{% include "partials/footer.html" %}
+
+<div class="actionbar">
+  <a class="btn btn-primary" href="tel:{{ site.phone_cta }}">{{ icon('phone') }} חייגו עכשיו</a>
+  <a class="btn btn-outline" href="#lead-form">{{ icon('doc') }} השאירו פרטים</a>
+</div>
+
+<button class="totop" type="button" aria-label="חזרה לראש העמוד">{{ icon('up') }}</button>
+
+{% include "partials/a11y.html" %}
+{% include "partials/consent.html" %}
+
+<script src="/assets/js/site.min.js" defer></script>
+</body>
+</html>

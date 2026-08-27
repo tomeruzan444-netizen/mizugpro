@@ -1,0 +1,54 @@
+{# Accessibility toolbar — replaces the AccessibleWP plugin the old site ran.
+   Native, RTL, keyboard-operable, and its state persists per visitor. #}
+<button class="a11y-btn" type="button" id="a11y-open"
+        aria-label="פתיחת תפריט נגישות" aria-expanded="false" aria-controls="a11y-panel">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 2a2.1 2.1 0 1 1 0 4.2A2.1 2.1 0 0 1 12 2Zm8.4 5.1c.2.6-.1 1.2-.7 1.4l-4.6 1.4v3l2.4 6.9a1.1 1.1 0 0 1-2 .8L13.2 15h-2.4l-2.3 5.6a1.1 1.1 0 0 1-2-.8l2.4-6.9v-3L4.3 8.5a1.1 1.1 0 0 1 .7-2.1L12 8.6l7-2.2c.6-.2 1.2.1 1.4.7Z"/>
+  </svg>
+</button>
+
+<div class="a11y-panel" id="a11y-panel" role="dialog" aria-modal="true"
+     aria-labelledby="a11y-title" hidden>
+  <div class="a11y-panel__head">
+    <h2 id="a11y-title">תפריט נגישות</h2>
+    <button class="a11y-close" type="button" id="a11y-close" aria-label="סגירת תפריט נגישות">&times;</button>
+  </div>
+
+  <div class="a11y-grid">
+    <button class="a11y-opt" type="button" data-a11y="keyboard" aria-pressed="false">
+      {{ icon('list') }} <span>ניווט מקלדת</span>
+    </button>
+    <button class="a11y-opt" type="button" data-a11y="noanim" aria-pressed="false">
+      {{ icon('bolt') }} <span>ביטול אנימציות</span>
+    </button>
+    <button class="a11y-opt" type="button" data-a11y="contrast" aria-pressed="false">
+      {{ icon('shield') }} <span>ניגודיות גבוהה</span>
+    </button>
+    <button class="a11y-opt" type="button" data-a11y="readable" aria-pressed="false">
+      {{ icon('doc') }} <span>גופן קריא</span>
+    </button>
+    <button class="a11y-opt" type="button" data-a11y="marktitles" aria-pressed="false">
+      {{ icon('award') }} <span>סימון כותרות</span>
+    </button>
+    <button class="a11y-opt" type="button" data-a11y="underline" aria-pressed="false">
+      {{ icon('check') }} <span>סימון קישורים</span>
+    </button>
+    <button class="a11y-opt" type="button" data-a11y="font-up">
+      {{ icon('up') }} <span>הגדלת טקסט</span>
+    </button>
+    <button class="a11y-opt" type="button" data-a11y="font-down">
+      {{ icon('chevron') }} <span>הקטנת טקסט</span>
+    </button>
+  </div>
+
+  <p class="a11y-scale" aria-live="polite">גודל הטקסט: <strong id="a11y-scale-value">100%</strong></p>
+
+  <button class="btn btn-outline btn-block btn-sm" type="button" data-a11y="reset">
+    איפוס כל ההגדרות
+  </button>
+
+  <p class="a11y-foot">
+    נתקלתם בבעיית נגישות? <a href="/הצהרת-נגישות/">הצהרת הנגישות שלנו</a>
+    או חייגו <a href="tel:{{ site.phone_cta }}">{{ site.phone_cta }}</a>
+  </p>
+</div>
