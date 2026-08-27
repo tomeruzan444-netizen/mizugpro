@@ -1,0 +1,289 @@
+<title>מפת הביטויים של מיזוג פרו</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
+<style>
+:root{
+  --navy:#04293A; --sky:#00ADEE; --gold:#F5BC0C;
+  --ink:#052335; --body:#3A5A6B; --muted:#6D8899;
+  --line:#D8E6EF; --line-soft:#EBF3F8; --card:#FFFFFF; --ground:#F6FBFE;
+  --bar:#BFE7FA;
+  --font:"Assistant","Segoe UI","Arial Hebrew",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#EAF4FA; --body:#A9C4D2; --muted:#7C9AAA;
+    --line:#123A50; --line-soft:#0C2C3E; --card:#082C3E; --ground:#04202E;
+    --bar:#0E5F84;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#EAF4FA; --body:#A9C4D2; --muted:#7C9AAA;
+  --line:#123A50; --line-soft:#0C2C3E; --card:#082C3E; --ground:#04202E; --bar:#0E5F84;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);font-family:var(--font);
+  font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{width:min(100% - 2.5rem,1080px);margin-inline:auto;padding:clamp(1.5rem,4vw,3.5rem) 0}
+h1,h2{color:var(--ink);margin:0;line-height:1.25;letter-spacing:-.01em}
+a{color:inherit}
+
+.top{border-bottom:3px solid var(--navy);padding-bottom:1.6rem;margin-bottom:2rem}
+.eyebrow{display:inline-flex;align-items:center;gap:.5em;font-size:.78rem;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--sky);margin-bottom:.6rem}
+.eyebrow::before{content:"";width:20px;height:3px;border-radius:2px;background:var(--gold)}
+h1{font-size:clamp(1.7rem,1.2rem+2vw,2.5rem);font-weight:800;text-wrap:balance}
+.lede{margin:.7rem 0 0;max-width:62ch;font-size:1.05rem}
+
+.totals{display:flex;flex-wrap:wrap;gap:2.4rem;margin-top:1.6rem}
+.tot b{display:block;font-size:1.7rem;font-weight:800;color:var(--ink);
+  font-variant-numeric:tabular-nums;line-height:1.1}
+.tot span{font-size:.86rem;color:var(--muted);font-weight:700}
+
+.grp{margin-top:2.6rem}
+.grp__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem 1rem;
+  padding-bottom:.6rem;border-bottom:1px solid var(--line)}
+.grp__head h2{font-size:1.22rem;font-weight:800}
+.grp__meta{margin:0;display:flex;gap:1rem;font-size:.84rem;color:var(--muted);font-weight:700;
+  font-variant-numeric:tabular-nums;margin-inline-start:auto}
+.grp__note{margin:.7rem 0 0;font-size:.92rem;color:var(--muted);max-width:70ch}
+
+.rows{list-style:none;margin:.5rem 0 0;padding:0}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr) 116px;
+  gap:.5rem 1.2rem;align-items:center;padding:.62rem .75rem;border-radius:9px}
+.row:nth-child(odd){background:var(--card)}
+.row__phrase{font-weight:700;color:var(--ink);font-size:1rem}
+.flag{margin-inline-start:.5em;font-size:.68rem;font-weight:800;letter-spacing:.04em;
+  color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:.05em .5em}
+.row__url{font-family:var(--mono);font-size:.78rem;color:var(--muted);direction:ltr;
+  text-align:start;text-decoration:none;overflow-wrap:anywhere;unicode-bidi:plaintext}
+.row__url:hover{color:var(--sky);text-decoration:underline}
+.row__n{display:flex;align-items:center;gap:.55rem;justify-content:flex-end}
+.row__n i{display:block;height:6px;border-radius:99px;background:var(--bar);
+  width:var(--w);min-width:3px;flex:none}
+.row__n b{font-variant-numeric:tabular-nums;font-size:.84rem;font-weight:700;
+  color:var(--muted);min-width:3.2em;text-align:start}
+
+@media (max-width:720px){
+  /* the bar is a % of its track, so the track stays a fixed width */
+  .row{grid-template-columns:minmax(0,1fr) 96px;gap:.15rem .8rem}
+  .row__url{grid-column:1/-1;font-size:.72rem}
+  .row__n{justify-content:flex-start}
+  .row__n b{min-width:2.8em}
+}
+</style>
+<script>document.documentElement.setAttribute("dir","rtl");document.documentElement.setAttribute("lang","he");</script>
+<div dir="rtl" lang="he">
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">mizugpro.co.il</span>
+    <h1>מפת הביטויים של מיזוג פרו</h1>
+    <p class="lede">כל 120 העמודים באתר, לפי הביטוי שכל עמוד בנוי סביבו. הביטוי נלקח
+    מכותרת ה־H1 של העמוד עד למפריד הראשון — זה מה שהעמוד באמת מכוון אליו.
+    הפס לצד כל שורה מציג את נפח התוכן ביחס לעמוד העשיר באתר.</p>
+    <div class="totals">
+      <div class="tot"><b>120</b><span>עמודים</span></div>
+      <div class="tot"><b>87,079</b><span>מילים באתר</span></div>
+      <div class="tot"><b>9</b><span>קבוצות נושא</span></div>
+      <div class="tot"><b>65</b><span>עמודי אזור שירות</span></div>
+    </div>
+  </header>
+  <section class="grp">
+<header class="grp__head">
+<h2>עמוד הבית</h2>
+<p class="grp__meta"><span>1 עמודים</span><span>311 מילים</span></p>
+</header>
+<ol class="rows">
+<li class="row"><span class="row__phrase">מיזוג פרו</span><a class="row__url" href="https://mizugpro.co.il/" target="_blank" rel="noopener">/</a><span class="row__n"><i style="--w:20%"></i><b>311</b></span></li>
+</ol>
+</section>
+<section class="grp">
+<header class="grp__head">
+<h2>שירותי התקנה</h2>
+<p class="grp__meta"><span>9 עמודים</span><span>7,495 מילים</span></p>
+</header>
+<ol class="rows">
+<li class="row"><span class="row__phrase">התקנת מזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D/" target="_blank" rel="noopener">/התקנת-מזגנים/</a><span class="row__n"><i style="--w:99%"></i><b>1,557</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן מיני מרכזי</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-%D7%9E%D7%99%D7%A0%D7%99-%D7%9E%D7%A8%D7%9B%D7%96%D7%99/" target="_blank" rel="noopener">/התקנת-מזגן-מיני-מרכזי/</a><span class="row__n"><i style="--w:81%"></i><b>1,283</b></span></li>
+<li class="row"><span class="row__phrase">מזגן VRF</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-vrf/" target="_blank" rel="noopener">/התקנת-מזגן-vrf/</a><span class="row__n"><i style="--w:80%"></i><b>1,261</b></span></li>
+<li class="row"><span class="row__phrase">אחריות על התקנת מזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%90%D7%97%D7%A8%D7%99%D7%95%D7%AA-%D7%A2%D7%9C-%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/אחריות-על-התקנת-מזגן/</a><span class="row__n"><i style="--w:44%"></i><b>691</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן עילי</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-%D7%A2%D7%99%D7%9C%D7%99/" target="_blank" rel="noopener">/התקנת-מזגן-עילי/</a><span class="row__n"><i style="--w:42%"></i><b>660</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן רצפתי</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%A8%D7%A6%D7%A4%D7%AA%D7%99/" target="_blank" rel="noopener">/מזגן-רצפתי/</a><span class="row__n"><i style="--w:42%"></i><b>657</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן נסתר</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-%D7%A0%D7%A1%D7%AA%D7%A8/" target="_blank" rel="noopener">/התקנת-מזגן-נסתר/</a><span class="row__n"><i style="--w:34%"></i><b>543</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן בממד</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-%D7%91%D7%9E%D7%9E%D7%93/" target="_blank" rel="noopener">/התקנת-מזגן-בממד/</a><span class="row__n"><i style="--w:30%"></i><b>467</b></span></li>
+<li class="row"><span class="row__phrase">מיזוג תעשייתי</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%99%D7%96%D7%95%D7%92-%D7%AA%D7%A2%D7%A9%D7%99%D7%99%D7%AA%D7%99/" target="_blank" rel="noopener">/מיזוג-תעשייתי/</a><span class="row__n"><i style="--w:24%"></i><b>376</b></span></li>
+</ol>
+</section>
+<section class="grp">
+<header class="grp__head">
+<h2>תיקון ותקלות</h2>
+<p class="grp__meta"><span>8 עמודים</span><span>6,042 מילים</span></p>
+</header>
+<p class="grp__note">ביטויים של תקלה, לא של שירות. מי שמחפש אותם נמצא כרגע עם מזגן מקולקל.</p>
+<ol class="rows">
+<li class="row"><span class="row__phrase">מזגן מטפטף</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%9E%D7%98%D7%A4%D7%98%D7%A3/" target="_blank" rel="noopener">/מזגן-מטפטף/</a><span class="row__n"><i style="--w:76%"></i><b>1,206</b></span></li>
+<li class="row"><span class="row__phrase">המזגן לא מקרר</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%9E%D7%96%D7%92%D7%9F-%D7%9C%D7%90-%D7%9E%D7%A7%D7%A8%D7%A8/" target="_blank" rel="noopener">/המזגן-לא-מקרר/</a><span class="row__n"><i style="--w:66%"></i><b>1,037</b></span></li>
+<li class="row"><span class="row__phrase">ריח רע מהמזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%A8%D7%99%D7%97-%D7%A8%D7%A2-%D7%9E%D7%94%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/ריח-רע-מהמזגן/</a><span class="row__n"><i style="--w:66%"></i><b>1,034</b></span></li>
+<li class="row"><span class="row__phrase">תיקון מזגנים</span><a class="row__url" href="https://mizugpro.co.il/%D7%AA%D7%99%D7%A7%D7%95%D7%9F-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D/" target="_blank" rel="noopener">/תיקון-מזגנים/</a><span class="row__n"><i style="--w:56%"></i><b>878</b></span></li>
+<li class="row"><span class="row__phrase">מזגן מרעיש</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%A8%D7%95%D7%A2%D7%A9/" target="_blank" rel="noopener">/מזגן-רועש/</a><span class="row__n"><i style="--w:43%"></i><b>685</b></span></li>
+<li class="row"><span class="row__phrase">מזגן לא מחמם</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%9C%D7%90-%D7%9E%D7%97%D7%9E%D7%9D/" target="_blank" rel="noopener">/מזגן-לא-מחמם/</a><span class="row__n"><i style="--w:28%"></i><b>444</b></span></li>
+<li class="row"><span class="row__phrase">קצר במזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%A7%D7%A6%D7%A8-%D7%91%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/קצר-במזגן/</a><span class="row__n"><i style="--w:26%"></i><b>408</b></span></li>
+<li class="row"><span class="row__phrase">תיקון מזגן מיני מרכזי</span><a class="row__url" href="https://mizugpro.co.il/%D7%AA%D7%99%D7%A7%D7%95%D7%9F-%D7%9E%D7%96%D7%92%D7%9F-%D7%9E%D7%99%D7%A0%D7%99-%D7%9E%D7%A8%D7%9B%D7%96%D7%99/" target="_blank" rel="noopener">/תיקון-מזגן-מיני-מרכזי/</a><span class="row__n"><i style="--w:22%"></i><b>350</b></span></li>
+</ol>
+</section>
+<section class="grp">
+<header class="grp__head">
+<h2>חלקים, גז ופירוק</h2>
+<p class="grp__meta"><span>7 עמודים</span><span>4,555 מילים</span></p>
+</header>
+<ol class="rows">
+<li class="row"><span class="row__phrase">פירוק מזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%A4%D7%99%D7%A8%D7%95%D7%A7-%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/פירוק-מזגן/</a><span class="row__n"><i style="--w:57%"></i><b>896</b></span></li>
+<li class="row"><span class="row__phrase">החלפת צינור ניקוז למזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%A6%D7%99%D7%A0%D7%95%D7%A8-%D7%A0%D7%99%D7%A7%D7%95%D7%96-%D7%9C%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/צינור-ניקוז-למזגן/</a><span class="row__n"><i style="--w:53%"></i><b>832</b></span></li>
+<li class="row"><span class="row__phrase">החלפת מדחס במזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%97%D7%9C%D7%A4%D7%AA-%D7%9E%D7%93%D7%97%D7%A1-%D7%91%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/החלפת-מדחס-במזגן/</a><span class="row__n"><i style="--w:49%"></i><b>778</b></span></li>
+<li class="row"><span class="row__phrase">מילוי גז למזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%99%D7%9C%D7%95%D7%99-%D7%92%D7%96-%D7%9C%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/מילוי-גז-למזגן/</a><span class="row__n"><i style="--w:42%"></i><b>666</b></span></li>
+<li class="row"><span class="row__phrase">החלפת מנוע למזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%97%D7%9C%D7%A4%D7%AA-%D7%9E%D7%A0%D7%95%D7%A2-%D7%9C%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/החלפת-מנוע-למזגן/</a><span class="row__n"><i style="--w:42%"></i><b>659</b></span></li>
+<li class="row"><span class="row__phrase">החלפת מאיץ במזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%97%D7%9C%D7%A4%D7%AA-%D7%9E%D7%90%D7%99%D7%A5-%D7%91%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/החלפת-מאיץ-במזגן/</a><span class="row__n"><i style="--w:24%"></i><b>384</b></span></li>
+<li class="row"><span class="row__phrase">החלפת עינית למזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%97%D7%9C%D7%A4%D7%AA-%D7%A2%D7%99%D7%A0%D7%99%D7%AA-%D7%9C%D7%9E%D7%96%D7%92%D7%9F/" target="_blank" rel="noopener">/החלפת-עינית-למזגן/</a><span class="row__n"><i style="--w:22%"></i><b>340</b></span></li>
+</ol>
+</section>
+<section class="grp">
+<header class="grp__head">
+<h2>ניקוי ותחזוקה</h2>
+<p class="grp__meta"><span>3 עמודים</span><span>2,698 מילים</span></p>
+</header>
+<ol class="rows">
+<li class="row"><span class="row__phrase">ניקוי מזגן מיני מרכזי</span><a class="row__url" href="https://mizugpro.co.il/%D7%A0%D7%99%D7%A7%D7%95%D7%99-%D7%9E%D7%99%D7%A0%D7%99-%D7%9E%D7%A8%D7%9B%D7%96%D7%99/" target="_blank" rel="noopener">/ניקוי-מיני-מרכזי/</a><span class="row__n"><i style="--w:76%"></i><b>1,196</b></span></li>
+<li class="row"><span class="row__phrase">ניקוי מזגן מעובש</span><a class="row__url" href="https://mizugpro.co.il/%D7%A0%D7%99%D7%A7%D7%95%D7%99-%D7%9E%D7%96%D7%92%D7%9F-%D7%9E%D7%A2%D7%95%D7%91%D7%A9-%D7%9E%D7%99%D7%93%D7%A2-%D7%95%D7%9E%D7%97%D7%99%D7%A8%D7%99%D7%9D/" target="_blank" rel="noopener">/ניקוי-מזגן-מעובש-מידע-ומחירים/</a><span class="row__n"><i style="--w:54%"></i><b>851</b></span></li>
+<li class="row"><span class="row__phrase">ניקוי מזגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%A0%D7%99%D7%A7%D7%95%D7%99-%D7%9E%D7%96%D7%92%D7%9F-2/" target="_blank" rel="noopener">/ניקוי-מזגן-2/</a><span class="row__n"><i style="--w:41%"></i><b>651</b></span></li>
+</ol>
+</section>
+<section class="grp">
+<header class="grp__head">
+<h2>גדלים ומחירים</h2>
+<p class="grp__meta"><span>12 עמודים</span><span>12,440 מילים</span></p>
+</header>
+<p class="grp__note">הביטויים כאן הם כוונת קנייה מובהקת — מישהו שכבר יודע איזה גודל הוא צריך.</p>
+<ol class="rows">
+<li class="row"><span class="row__phrase">מחירון מזגנים</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%97%D7%99%D7%A8%D7%95%D7%9F-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D/" target="_blank" rel="noopener">/מחירון-מזגנים/</a><span class="row__n"><i style="--w:100%"></i><b>1,577</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן 1 כוח סוס</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-1-%D7%9B%D7%95%D7%97-%D7%A1%D7%95%D7%A1/" target="_blank" rel="noopener">/התקנת-מזגן-1-כוח-סוס/</a><span class="row__n"><i style="--w:88%"></i><b>1,382</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן 2.5 כוח סוס</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-2-5-%D7%9B%D7%95%D7%97-%D7%A1%D7%95%D7%A1/" target="_blank" rel="noopener">/מזגן-2-5-כוח-סוס/</a><span class="row__n"><i style="--w:80%"></i><b>1,265</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן חצי כוח סוס ( 0.5 כוח סוס )</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%97%D7%A6%D7%99-%D7%9B%D7%95%D7%97-%D7%A1%D7%95%D7%A1/" target="_blank" rel="noopener">/מזגן-חצי-כוח-סוס/</a><span class="row__n"><i style="--w:77%"></i><b>1,208</b></span></li>
+<li class="row"><span class="row__phrase">מזגן אלקטרה 1 כ&quot;ס כולל התקנה של מיזוג פרו</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%90%D7%9C%D7%A7%D7%98%D7%A8%D7%94-1-%D7%9B%D7%A1/" target="_blank" rel="noopener">/מזגן-אלקטרה-1-כס/</a><span class="row__n"><i style="--w:76%"></i><b>1,205</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן 1.25 כוח סוס</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-1-25-%D7%9B%D7%95%D7%97-%D7%A1%D7%95%D7%A1/" target="_blank" rel="noopener">/התקנת-מזגן-1-25-כוח-סוס/</a><span class="row__n"><i style="--w:73%"></i><b>1,153</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן 2 כוח סוס</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-2-%D7%9B%D7%95%D7%97-%D7%A1%D7%95%D7%A1/" target="_blank" rel="noopener">/התקנת-מזגן-2-כוח-סוס/</a><span class="row__n"><i style="--w:69%"></i><b>1,082</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן 1.5 כוח סוס</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-1-5-%D7%9B%D7%95%D7%97-%D7%A1%D7%95%D7%A1/" target="_blank" rel="noopener">/מזגן-1-5-כוח-סוס/</a><span class="row__n"><i style="--w:59%"></i><b>926</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן 5 כוח סוס</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-5-%D7%9B%D7%95%D7%97-%D7%A1%D7%95%D7%A1/" target="_blank" rel="noopener">/התקנת-מזגן-5-כוח-סוס/</a><span class="row__n"><i style="--w:46%"></i><b>729</b></span></li>
+<li class="row"><span class="row__phrase">מזגן 3.5 כוח סוס</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-3-5-%D7%9B%D7%95%D7%97-%D7%A1%D7%95%D7%A1/" target="_blank" rel="noopener">/מזגן-3-5-כוח-סוס/</a><span class="row__n"><i style="--w:42%"></i><b>663</b></span></li>
+<li class="row"><span class="row__phrase">התקנת מזגן 3 כוח סוס</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%AA%D7%A7%D7%A0%D7%AA-%D7%9E%D7%96%D7%92%D7%9F-3-%D7%9B%D7%95%D7%97-%D7%A1%D7%95%D7%A1/" target="_blank" rel="noopener">/התקנת-מזגן-3-כוח-סוס/</a><span class="row__n"><i style="--w:40%"></i><b>634</b></span></li>
+<li class="row"><span class="row__phrase">כמה עולה מזגן לשעה</span><a class="row__url" href="https://mizugpro.co.il/%D7%9B%D7%9E%D7%94-%D7%A2%D7%95%D7%9C%D7%94-%D7%9E%D7%96%D7%92%D7%9F-%D7%9C%D7%A9%D7%A2%D7%94/" target="_blank" rel="noopener">/כמה-עולה-מזגן-לשעה/</a><span class="row__n"><i style="--w:39%"></i><b>616</b></span></li>
+</ol>
+</section>
+<section class="grp">
+<header class="grp__head">
+<h2>אזורי שירות</h2>
+<p class="grp__meta"><span>65 עמודים</span><span>46,730 מילים</span></p>
+</header>
+<p class="grp__note">65 עמודים — יותר ממחצית האתר. כל עמוד מכוון לעיר אחת, והביטוי זהה במבנה: טכנאי מזגנים + שם היישוב.</p>
+<ol class="rows">
+<li class="row"><span class="row__phrase">טכנאי מזגנים בצפון</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%A6%D7%A4%D7%95%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-צפון/</a><span class="row__n"><i style="--w:85%"></i><b>1,333</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים באבן יהודה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%90%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-באבן-יהודה/</a><span class="row__n"><i style="--w:78%"></i><b>1,236</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בתל אביב</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%AA%D7%9C-%D7%90%D7%91%D7%99%D7%91/" target="_blank" rel="noopener">/טכנאי-מזגנים-בתל-אביב/</a><span class="row__n"><i style="--w:76%"></i><b>1,205</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים באשדוד</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%90%D7%A9%D7%93%D7%95%D7%93/" target="_blank" rel="noopener">/טכנאי-מזגנים-באשדוד/</a><span class="row__n"><i style="--w:76%"></i><b>1,204</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בגבעתיים</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%92%D7%91%D7%A2%D7%AA%D7%99%D7%99%D7%9D/" target="_blank" rel="noopener">/טכנאי-מזגנים-גבעתיים/</a><span class="row__n"><i style="--w:76%"></i><b>1,204</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים במרכז</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%9E%D7%A8%D7%9B%D7%96/" target="_blank" rel="noopener">/טכנאי-מזגנים-במרכז/</a><span class="row__n"><i style="--w:74%"></i><b>1,171</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בזכרון יעקב</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%96%D7%9B%D7%A8%D7%95%D7%9F-%D7%99%D7%A2%D7%A7%D7%91/" target="_blank" rel="noopener">/טכנאי-מזגנים-זכרון-יעקב/</a><span class="row__n"><i style="--w:74%"></i><b>1,164</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים ברמת גן</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-ברמת-גן/</a><span class="row__n"><i style="--w:64%"></i><b>1,015</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים באור יהודה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%90%D7%95%D7%A8-%D7%99%D7%94%D7%95%D7%93%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-באור-יהודה/</a><span class="row__n"><i style="--w:62%"></i><b>973</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים ביקנעם</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%99%D7%A7%D7%A0%D7%A2%D7%9D/" target="_blank" rel="noopener">/טכנאי-מזגנים-ביקנעם/</a><span class="row__n"><i style="--w:61%"></i><b>969</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בכרמיאל</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%9B%D7%A8%D7%9E%D7%99%D7%90%D7%9C/" target="_blank" rel="noopener">/טכנאי-מזגנים-בכרמיאל/</a><span class="row__n"><i style="--w:56%"></i><b>889</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בחיפה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%97%D7%99%D7%A4%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בחיפה/</a><span class="row__n"><i style="--w:54%"></i><b>844</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בבת ים</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%91%D7%AA-%D7%99%D7%9D/" target="_blank" rel="noopener">/טכנאי-מזגנים-בבת-ים/</a><span class="row__n"><i style="--w:53%"></i><b>839</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים ביהוד</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%99%D7%94%D7%95%D7%93/" target="_blank" rel="noopener">/טכנאי-מזגנים-ביהוד/</a><span class="row__n"><i style="--w:53%"></i><b>833</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בקיסריה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A7%D7%99%D7%A1%D7%A8%D7%99%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בקיסריה/</a><span class="row__n"><i style="--w:52%"></i><b>826</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים באופקים</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%90%D7%95%D7%A4%D7%A7%D7%99%D7%9D/" target="_blank" rel="noopener">/טכנאי-מזגנים-באופקים/</a><span class="row__n"><i style="--w:52%"></i><b>824</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים באריאל</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%90%D7%A8%D7%99%D7%90%D7%9C/" target="_blank" rel="noopener">/טכנאי-מזגנים-באריאל/</a><span class="row__n"><i style="--w:52%"></i><b>818</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בפתח תקווה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A4%D7%AA%D7%97-%D7%AA%D7%A7%D7%95%D7%95%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בפתח-תקווה/</a><span class="row__n"><i style="--w:50%"></i><b>792</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בגבעת שמואל</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%92%D7%91%D7%A2%D7%AA-%D7%A9%D7%9E%D7%95%D7%90%D7%9C/" target="_blank" rel="noopener">/טכנאי-מזגנים-בגבעת-שמואל/</a><span class="row__n"><i style="--w:50%"></i><b>791</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בהוד השרון</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%94%D7%95%D7%93-%D7%94%D7%A9%D7%A8%D7%95%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-בהוד-השרון/</a><span class="row__n"><i style="--w:50%"></i><b>788</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים באשקלון</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%90%D7%A9%D7%A7%D7%9C%D7%95%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-באשקלון/</a><span class="row__n"><i style="--w:50%"></i><b>786</b></span></li>
+<li class="row"><span class="row__phrase">ניקוי מזגנים בצפון</span><a class="row__url" href="https://mizugpro.co.il/%D7%A0%D7%99%D7%A7%D7%95%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A6%D7%A4%D7%95%D7%9F/" target="_blank" rel="noopener">/ניקוי-מזגנים-בצפון/</a><span class="row__n"><i style="--w:50%"></i><b>784</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בטבריה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%98%D7%91%D7%A8%D7%99%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בטבריה/</a><span class="row__n"><i style="--w:49%"></i><b>780</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בגדרה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%92%D7%93%D7%A8%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בגדרה/</a><span class="row__n"><i style="--w:49%"></i><b>778</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בלוד</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%9C%D7%95%D7%93/" target="_blank" rel="noopener">/טכנאי-מזגנים-בלוד/</a><span class="row__n"><i style="--w:49%"></i><b>770</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בדרום</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%93%D7%A8%D7%95%D7%9D/" target="_blank" rel="noopener">/טכנאי-מזגנים-בדרום/</a><span class="row__n"><i style="--w:49%"></i><b>766</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בקריות</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A7%D7%A8%D7%99%D7%95%D7%AA/" target="_blank" rel="noopener">/טכנאי-מזגנים-בקריות/</a><span class="row__n"><i style="--w:48%"></i><b>764</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בבית דגן</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%91%D7%99%D7%AA-%D7%93%D7%92%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-בבית-דגן/</a><span class="row__n"><i style="--w:48%"></i><b>759</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים ברמלה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A8%D7%9E%D7%9C%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-ברמלה/</a><span class="row__n"><i style="--w:48%"></i><b>757</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בתל מונד</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%AA%D7%9C-%D7%9E%D7%95%D7%A0%D7%93/" target="_blank" rel="noopener">/טכנאי-מזגנים-בתל-מונד/</a><span class="row__n"><i style="--w:48%"></i><b>757</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בבאר שבע</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%91%D7%90%D7%A8-%D7%A9%D7%91%D7%A2/" target="_blank" rel="noopener">/טכנאי-מזגנים-בבאר-שבע/</a><span class="row__n"><i style="--w:46%"></i><b>733</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים ברחובות</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A8%D7%97%D7%95%D7%91%D7%95%D7%AA/" target="_blank" rel="noopener">/טכנאי-מזגנים-ברחובות/</a><span class="row__n"><i style="--w:46%"></i><b>719</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים באלעד</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%90%D7%9C%D7%A2%D7%93/" target="_blank" rel="noopener">/טכנאי-מזגנים-באלעד/</a><span class="row__n"><i style="--w:45%"></i><b>711</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בשוהם</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A9%D7%95%D7%94%D7%9D-2/" target="_blank" rel="noopener">/טכנאי-מזגנים-בשוהם-2/</a><span class="row__n"><i style="--w:44%"></i><b>694</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים ברעננה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A8%D7%A2%D7%A0%D7%A0%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-ברעננה/</a><span class="row__n"><i style="--w:43%"></i><b>679</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בראש העין</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A8%D7%90%D7%A9-%D7%94%D7%A2%D7%99%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-בראש-העין/</a><span class="row__n"><i style="--w:40%"></i><b>636</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בפרדס חנה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A4%D7%A8%D7%93%D7%A1-%D7%97%D7%A0%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בפרדס-חנה/</a><span class="row__n"><i style="--w:39%"></i><b>609</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בחולון</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%97%D7%95%D7%9C%D7%95%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-בחולון/</a><span class="row__n"><i style="--w:38%"></i><b>598</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בבית שמש</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%91%D7%99%D7%AA-%D7%A9%D7%9E%D7%A9/" target="_blank" rel="noopener">/טכנאי-מזגנים-בבית-שמש/</a><span class="row__n"><i style="--w:37%"></i><b>585</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בבני ברק</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%91%D7%A0%D7%99-%D7%91%D7%A8%D7%A7/" target="_blank" rel="noopener">/טכנאי-מזגנים-בבני-ברק/</a><span class="row__n"><i style="--w:37%"></i><b>583</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בקריית אונו</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A7%D7%A8%D7%99%D7%99%D7%AA-%D7%90%D7%95%D7%A0%D7%95/" target="_blank" rel="noopener">/טכנאי-מזגנים-בקריית-אונו/</a><span class="row__n"><i style="--w:37%"></i><b>581</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בגני תקווה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%92%D7%A0%D7%99-%D7%AA%D7%A7%D7%95%D7%95%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בגני-תקווה/</a><span class="row__n"><i style="--w:37%"></i><b>581</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בכפר יונה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%9B%D7%A4%D7%A8-%D7%99%D7%95%D7%A0%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בכפר-יונה/</a><span class="row__n"><i style="--w:37%"></i><b>576</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בכפר סבא</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%9B%D7%A4%D7%A8-%D7%A1%D7%91%D7%90/" target="_blank" rel="noopener">/טכנאי-מזגנים-בכפר-סבא/</a><span class="row__n"><i style="--w:36%"></i><b>571</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בבית שאן</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%91%D7%99%D7%AA-%D7%A9%D7%90%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-בבית-שאן/</a><span class="row__n"><i style="--w:36%"></i><b>570</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בחריש</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%97%D7%A8%D7%99%D7%A9/" target="_blank" rel="noopener">/טכנאי-מזגנים-בחריש/</a><span class="row__n"><i style="--w:36%"></i><b>568</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בנתניה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A0%D7%AA%D7%A0%D7%99%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בנתניה/</a><span class="row__n"><i style="--w:36%"></i><b>565</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים במזכרת בתיה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%9E%D7%96%D7%9B%D7%A8%D7%AA-%D7%91%D7%AA%D7%99%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-במזכרת-בתיה/</a><span class="row__n"><i style="--w:36%"></i><b>564</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בקריית גת</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A7%D7%A8%D7%99%D7%99%D7%AA-%D7%92%D7%AA/" target="_blank" rel="noopener">/טכנאי-מזגנים-בקריית-גת/</a><span class="row__n"><i style="--w:35%"></i><b>558</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בירושלים</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D/" target="_blank" rel="noopener">/טכנאי-מזגנים-בירושלים/</a><span class="row__n"><i style="--w:35%"></i><b>553</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בנס ציונה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A0%D7%A1-%D7%A6%D7%99%D7%95%D7%A0%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בנס-ציונה/</a><span class="row__n"><i style="--w:35%"></i><b>551</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בנשר</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A0%D7%A9%D7%A8/" target="_blank" rel="noopener">/טכנאי-מזגנים-בנשר/</a><span class="row__n"><i style="--w:35%"></i><b>550</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים באור עקיבא</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%90%D7%95%D7%A8-%D7%A2%D7%A7%D7%99%D7%91%D7%90/" target="_blank" rel="noopener">/טכנאי-מזגנים-באור-עקיבא/</a><span class="row__n"><i style="--w:33%"></i><b>528</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בגן יבנה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%92%D7%9F-%D7%99%D7%91%D7%A0%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בגן-יבנה/</a><span class="row__n"><i style="--w:33%"></i><b>528</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בסביון- מידע ומחירים</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A1%D7%91%D7%99%D7%95%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-בסביון/</a><span class="row__n"><i style="--w:33%"></i><b>522</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בחדרה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%97%D7%93%D7%A8%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בחדרה/</a><span class="row__n"><i style="--w:33%"></i><b>520</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים במודיעין</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%9E%D7%95%D7%93%D7%99%D7%A2%D7%99%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-במודיעין/</a><span class="row__n"><i style="--w:33%"></i><b>514</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בקדימה צורן</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A7%D7%93%D7%99%D7%9E%D7%94-%D7%A6%D7%95%D7%A8%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-בקדימה-צורן/</a><span class="row__n"><i style="--w:32%"></i><b>511</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בבנימינה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%91%D7%A0%D7%99%D7%9E%D7%99%D7%A0%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בבנימינה/</a><span class="row__n"><i style="--w:32%"></i><b>505</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בהרצליה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%94%D7%A8%D7%A6%D7%9C%D7%99%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בהרצליה/</a><span class="row__n"><i style="--w:30%"></i><b>477</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בעפולה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A2%D7%A4%D7%95%D7%9C%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-בעפולה/</a><span class="row__n"><i style="--w:30%"></i><b>473</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בעתלית</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A2%D7%AA%D7%9C%D7%99%D7%AA/" target="_blank" rel="noopener">/טכנאי-מזגנים-בעתלית/</a><span class="row__n"><i style="--w:30%"></i><b>466</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים ביבנה</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%99%D7%91%D7%A0%D7%94/" target="_blank" rel="noopener">/טכנאי-מזגנים-ביבנה/</a><span class="row__n"><i style="--w:27%"></i><b>428</b></span></li>
+<li class="row"><span class="row__phrase">טכנאי מזגנים בראשון לציון</span><a class="row__url" href="https://mizugpro.co.il/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D-%D7%91%D7%A8%D7%90%D7%A9%D7%95%D7%9F-%D7%9C%D7%A6%D7%99%D7%95%D7%9F/" target="_blank" rel="noopener">/טכנאי-מזגנים-בראשון-לציון/</a><span class="row__n"><i style="--w:27%"></i><b>421</b></span></li>
+<li class="row"><span class="row__phrase">אזורי שירות</span><a class="row__url" href="https://mizugpro.co.il/%D7%90%D7%96%D7%95%D7%A8%D7%99-%D7%A9%D7%99%D7%A8%D7%95%D7%AA/" target="_blank" rel="noopener">/אזורי-שירות/</a><span class="row__n"><i style="--w:5%"></i><b>83</b></span></li>
+</ol>
+</section>
+<section class="grp">
+<header class="grp__head">
+<h2>מדריכים ובחירת מזגן</h2>
+<p class="grp__meta"><span>9 עמודים</span><span>5,601 מילים</span></p>
+</header>
+<ol class="rows">
+<li class="row"><span class="row__phrase">מזגן חלון</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%97%D7%9C%D7%95%D7%9F/" target="_blank" rel="noopener">/מזגן-חלון/</a><span class="row__n"><i style="--w:65%"></i><b>1,024</b></span></li>
+<li class="row"><span class="row__phrase">מזגן מולטי אינוורטר</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%9E%D7%95%D7%9C%D7%98%D7%99-%D7%90%D7%99%D7%95%D7%95%D7%A8%D7%98%D7%A8/" target="_blank" rel="noopener">/מזגן-מולטי-איוורטר/</a><span class="row__n"><i style="--w:52%"></i><b>827</b></span></li>
+<li class="row"><span class="row__phrase">קורס טכנאי מזגנים</span><a class="row__url" href="https://mizugpro.co.il/%D7%A7%D7%95%D7%A8%D7%A1-%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%9E%D7%96%D7%92%D7%A0%D7%99%D7%9D/" target="_blank" rel="noopener">/קורס-טכנאי-מזגנים/</a><span class="row__n"><i style="--w:51%"></i><b>804</b></span></li>
+<li class="row"><span class="row__phrase">שילוב מערכות מיזוג חכמות בבנייה ירוקה</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%9E%D7%99%D7%96%D7%95%D7%92-%D7%97%D7%9B%D7%9E%D7%95%D7%AA-%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%94-%D7%99%D7%A8%D7%95%D7%A7%D7%94/" target="_blank" rel="noopener">/מערכות-מיזוג-חכמות-בבנייה-ירוקה/</a><span class="row__n"><i style="--w:49%"></i><b>776</b></span></li>
+<li class="row"><span class="row__phrase">מזגן לחדר שינה</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%9C%D7%97%D7%93%D7%A8-%D7%A9%D7%99%D7%A0%D7%94/" target="_blank" rel="noopener">/מזגן-לחדר-שינה/</a><span class="row__n"><i style="--w:45%"></i><b>705</b></span></li>
+<li class="row"><span class="row__phrase">איזה מזגן הכי טוב</span><a class="row__url" href="https://mizugpro.co.il/%D7%90%D7%99%D7%96%D7%94-%D7%9E%D7%96%D7%92%D7%9F-%D7%94%D7%9B%D7%99-%D7%98%D7%95%D7%91/" target="_blank" rel="noopener">/איזה-מזגן-הכי-טוב/</a><span class="row__n"><i style="--w:38%"></i><b>603</b></span></li>
+<li class="row"><span class="row__phrase">מזגן אינוורטר יתרונות וחסרונות</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%96%D7%92%D7%9F-%D7%90%D7%99%D7%A0%D7%95%D7%95%D7%A8%D7%98%D7%A8-%D7%97%D7%A1%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%95%D7%99%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA/" target="_blank" rel="noopener">/מזגן-אינוורטר-חסרונות-ויתרונות/</a><span class="row__n"><i style="--w:26%"></i><b>413</b></span></li>
+<li class="row"><span class="row__phrase">קטגוריה: בלוג</span><a class="row__url" href="https://mizugpro.co.il/category/%D7%91%D7%9C%D7%95%D7%92/" target="_blank" rel="noopener">/category/בלוג/</a><span class="row__n"><i style="--w:17%"></i><b>263</b></span></li>
+<li class="row"><span class="row__phrase">בלוג</span><a class="row__url" href="https://mizugpro.co.il/%D7%91%D7%9C%D7%95%D7%92/" target="_blank" rel="noopener">/בלוג/</a><span class="row__n"><i style="--w:12%"></i><b>186</b></span></li>
+</ol>
+</section>
+<section class="grp">
+<header class="grp__head">
+<h2>עמודי חברה ומשפט</h2>
+<p class="grp__meta"><span>6 עמודים</span><span>1,207 מילים</span></p>
+</header>
+<p class="grp__note">לא מיועדים לדירוג. עמוד התודה מסומן noindex.</p>
+<ol class="rows">
+<li class="row"><span class="row__phrase">מדיניות פרטיות מיזוג פרו</span><a class="row__url" href="https://mizugpro.co.il/%D7%9E%D7%93%D7%99%D7%A0%D7%99%D7%95%D7%AA-%D7%A4%D7%A8%D7%98%D7%99%D7%95%D7%AA/" target="_blank" rel="noopener">/מדיניות-פרטיות/</a><span class="row__n"><i style="--w:30%"></i><b>471</b></span></li>
+<li class="row"><span class="row__phrase">מי אנחנו</span><a class="row__url" href="https://mizugpro.co.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/" target="_blank" rel="noopener">/אודות/</a><span class="row__n"><i style="--w:17%"></i><b>269</b></span></li>
+<li class="row"><span class="row__phrase">הצהרת נגישות</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%A6%D7%94%D7%A8%D7%AA-%D7%A0%D7%92%D7%99%D7%A9%D7%95%D7%AA/" target="_blank" rel="noopener">/הצהרת-נגישות/</a><span class="row__n"><i style="--w:16%"></i><b>248</b></span></li>
+<li class="row"><span class="row__phrase">הממליצים שלנו</span><a class="row__url" href="https://mizugpro.co.il/%D7%94%D7%9E%D7%9E%D7%9C%D7%99%D7%A6%D7%99%D7%9D-%D7%A9%D7%9C%D7%A0%D7%95/" target="_blank" rel="noopener">/הממליצים-שלנו/</a><span class="row__n"><i style="--w:5%"></i><b>81</b></span></li>
+<li class="row"><span class="row__phrase">צרו קשר</span><a class="row__url" href="https://mizugpro.co.il/%D7%A6%D7%A8%D7%95-%D7%A7%D7%A9%D7%A8/" target="_blank" rel="noopener">/צרו-קשר/</a><span class="row__n"><i style="--w:5%"></i><b>76</b></span></li>
+<li class="row"><span class="row__phrase">עמוד תודה<span class="flag">noindex</span></span><a class="row__url" href="https://mizugpro.co.il/thank-you/" target="_blank" rel="noopener">/thank-you/</a><span class="row__n"><i style="--w:4%"></i><b>62</b></span></li>
+</ol>
+</section>
+</div>
+</div>
