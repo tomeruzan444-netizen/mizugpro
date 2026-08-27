@@ -391,7 +391,10 @@ button { font: inherit; }
 .card__link { margin-top: auto; font-weight: 700; color: var(--blue-600); display: inline-flex; align-items: center; gap: .4em; }
 .card__link svg { width: 16px; height: 16px; transition: transform .2s ease; }
 .card:hover .card__link svg { transform: translateX(-4px); }
-.card--link::after { content: ""; position: absolute; inset: 0; }
+/* stretch the heading link across the whole tile */
+.card--link h3 a::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.card--link h3 a { position: static; }
+.card--link :is(p, .card__link) { position: relative; z-index: 0; }
 
 /* colour variants */
 /* four shades of the two brand colours — no hues from outside the logo */

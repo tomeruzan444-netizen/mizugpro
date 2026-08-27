@@ -35,7 +35,7 @@
         <ul class="hero__chips" style="margin-top:1.5rem">
           <li>{{ icon('check-circle') }} הגעה מהירה תוך שעות</li>
           <li>{{ icon('shield') }} אחריות מלאה על כל עבודה</li>
-          <li>{{ icon('tag') }} מחיר סופי מראש</li>
+          <li>{{ icon('price') }} מחיר סופי מראש</li>
         </ul>
       </div>
       <div>{% include "partials/leadform.html" %}</div>
@@ -108,7 +108,7 @@
 
     {%- if page.tail.services %}
     <div class="section__head">
-      <span class="section__eyebrow">{{ icon('tools')|safe }} שירותים</span>
+      <span class="section__eyebrow">{{ icon('ac-unit')|safe }} שירותים</span>
       <h2 class="section__title">{{ page.tail.services_label|default('בין השירותים שלנו') }}</h2>
     </div>
     <ul class="linkgrid">
