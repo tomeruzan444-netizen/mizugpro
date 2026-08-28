@@ -16,6 +16,7 @@ import sidebar_groups  # noqa: E402
 import dedupe_city  # noqa: E402
 import vat_note  # noqa: E402
 import tables  # noqa: E402
+import dashes  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -921,6 +922,9 @@ def main():
             "schema": [], "path": "/404.html", "h1": "העמוד שחיפשתם לא נמצא",
         }))
 
+    # last, so it catches copy, templates and Python-built strings alike
+    dash_files, dash_count = dashes.sweep(DIST)
+
     json.dump(report, open(os.path.join(ROOT, "migration-report.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
 
@@ -933,6 +937,7 @@ def main():
               open(os.path.join(ROOT, "content-fixes.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
 
+    print("dashes flattened:", dash_count, "in", dash_files, "files")
     print("tables normalised:", _tables_touched)
     print("pages rendered :", len(report["pages"]))
     print("broken links   :", len(report["broken_links"]))
