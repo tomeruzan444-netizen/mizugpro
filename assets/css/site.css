@@ -821,6 +821,22 @@ button { font: inherit; }
 }
 .footer__legal { display: flex; flex-wrap: wrap; gap: var(--sp-4); }
 
+/* agency credit, quieter than the copyright line above it */
+.footer__credit {
+  border-top: 1px solid rgba(255,255,255,.12);
+  margin: 0; padding: var(--sp-4) 0 var(--sp-5);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: .4em; font-size: .88rem; color: rgba(255,255,255,.6); text-align: center;
+}
+.footer__credit a {
+  display: inline-flex; align-items: center; gap: .45em;
+  color: #fff; font-weight: 700; font-size: inherit;
+}
+.footer__credit img { width: 20px; height: 20px; border-radius: 50%; }
+/* at full scroll the floating accessibility button parks bottom-left, right on
+   top of the link; leave it room so the credit stays readable and tappable */
+@media (max-width: 860px) { .footer__credit { padding-bottom: 64px; } }
+
 /* ---------- mobile action bar ------------------------------------------- */
 .actionbar {
   position: fixed; inset-inline: 0; bottom: 0; z-index: 180; display: none;
