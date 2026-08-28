@@ -12,6 +12,9 @@ on:
       - "build/**"
       - "_source/**"
       - ".github/workflows/deploy.yml"
+      # the audit only reads the live site; it cannot change what gets built
+      - "!build/seo_audit.py"
+      - "!build/mail_report.py"
   workflow_dispatch:
 
 concurrency:

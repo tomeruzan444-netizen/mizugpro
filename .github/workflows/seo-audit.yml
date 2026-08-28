@@ -1,0 +1,90 @@
+name: weekly SEO audit
+
+# Every Sunday morning, crawl the live site and file a report.
+#
+# This runs on GitHub's runners rather than as a scheduled Claude routine
+# because a runner can actually reach mizugpro.co.il — the cloud routine could
+# not, and an audit that cannot fetch the site has nothing to audit.
+
+on:
+  schedule:
+    # 06:00 UTC = 09:00 Asia/Jerusalem
+    - cron: "0 6 * * 0"
+  workflow_dispatch:
+    inputs:
+      site:
+        description: "Site to audit"
+        required: false
+        default: "https://mizugpro.co.il"
+
+concurrency:
+  group: seo-audit
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --quiet requests beautifulsoup4 lxml
+
+      - name: Crawl the live site and write the report
+        working-directory: build
+        env:
+          AUDIT_DELAY: "0.3"
+        run: python seo_audit.py "${{ inputs.site || 'https://mizugpro.co.il' }}"
+
+      - name: Keep the report in the repo
+        run: |
+          git config user.name  "seo-audit"
+          git config user.email "actions@github.com"
+          git add seo-reports/
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "SEO audit $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: File the report as an issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # An issue is how the report reaches an inbox: GitHub emails the
+          # assignee, so no SMTP credentials have to live in this repo.
+          BODY=seo-reports/latest.md
+          # issue bodies cap at 65536 characters
+          head -c 60000 "$BODY" > /tmp/body.md
+          if [ "$(wc -c < "$BODY")" -gt 60000 ]; then
+            printf '\n\n_(נחתך — הדוח המלא ב-`seo-reports/`)_\n' >> /tmp/body.md
+          fi
+          gh issue create \
+            --title "ביקורת SEO — $(date -u +%Y-%m-%d)" \
+            --body-file /tmp/body.md \
+            --assignee "${{ github.repository_owner }}" \
+            || gh issue create \
+                 --title "ביקורת SEO — $(date -u +%Y-%m-%d)" \
+                 --body-file /tmp/body.md
+
+      - name: Email the report
+        # Optional. Runs only once SEO_MAIL_TO and a Gmail app password are set
+        # under Settings → Secrets and variables → Actions.
+        if: ${{ secrets.SEO_MAIL_TO != '' && secrets.SEO_MAIL_PASSWORD != '' }}
+        env:
+          MAIL_TO: ${{ secrets.SEO_MAIL_TO }}
+          MAIL_USER: ${{ secrets.SEO_MAIL_USER }}
+          MAIL_PASSWORD: ${{ secrets.SEO_MAIL_PASSWORD }}
+        run: python build/mail_report.py
+
+      - name: Summary
+        run: cat seo-reports/latest.md >> $GITHUB_STEP_SUMMARY
