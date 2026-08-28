@@ -62,6 +62,9 @@ for col in footer.select(".elementor-widget-heading h3, h3"):
             continue
         seen.add(href)
         links.append({"text": text, "href": href})
+    # the technician course is not a service we sell — it does not belong in
+    # the footer alongside the service pages
+    links = [l for l in links if l["href"] != "/קורס-טכנאי-מזגנים/"]
     if links:
         columns.append({"title": title, "links": links})
 

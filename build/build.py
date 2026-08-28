@@ -100,6 +100,33 @@ for _file, _alt in BRAND_LOGOS:
         site["brands"].append({"src": _src, "alt": _alt, "w": _w, "h": _h})
 
 
+def fingerprint(rel):
+    """
+    Assets are served with `immutable, max-age=1 year`, which is only safe when
+    the filename changes with the content — otherwise a new stylesheet can never
+    reach a returning visitor. Content hash goes in the name.
+    """
+    src = os.path.join(ROOT, rel)
+    if not os.path.exists(src):
+        return None
+    import hashlib
+    data = open(src, "rb").read()
+    digest = hashlib.sha1(data).hexdigest()[:10]
+    folder, name = os.path.split(rel)
+    stem, ext = os.path.splitext(name)
+    stem = stem[:-4] if stem.endswith(".min") else stem
+    return {"src": rel, "name": "%s.%s%s" % (stem, digest, ext),
+            "href": "/%s/%s.%s%s" % (folder.replace("\\", "/"), stem, digest, ext),
+            "data": data}
+
+
+FINGERPRINTED = [fingerprint("assets/css/site.min.css"),
+                 fingerprint("assets/js/site.min.js")]
+FINGERPRINTED = [f for f in FINGERPRINTED if f]
+site["css_href"] = next((f["href"] for f in FINGERPRINTED if f["src"].endswith(".css")), "/assets/css/site.min.css")
+site["js_href"] = next((f["href"] for f in FINGERPRINTED if f["src"].endswith(".js")), "/assets/js/site.min.js")
+
+
 def rewrite_html(s):
     if not isinstance(s, str):
         return s
@@ -840,6 +867,15 @@ def main():
 
     shutil.copytree(os.path.join(ROOT, "assets"), os.path.join(DIST, "assets"),
                     ignore=_ignore)
+
+    for f in FINGERPRINTED:
+        folder = os.path.join(DIST, os.path.dirname(f["src"]))
+        os.makedirs(folder, exist_ok=True)
+        open(os.path.join(folder, f["name"]), "wb").write(f["data"])
+        stale = os.path.join(DIST, f["src"])
+        if os.path.exists(stale):
+            os.remove(stale)
+    print("fingerprinted  :", ", ".join(f["name"] for f in FINGERPRINTED))
     print("image files shipped:", len(os.listdir(os.path.join(DIST, "assets", "img"))))
 
     # ---- sitemap + robots ----

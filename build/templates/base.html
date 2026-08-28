@@ -41,7 +41,7 @@
 {# self-hosted font + one stylesheet: no third-party requests at all #}
 <link rel="preload" href="/assets/fonts/assistant-hebrew-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/assistant-hebrew-800.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.min.css">
+<link rel="stylesheet" href="{{ site.css_href }}">
 {%- if site.hero_photo %}
 <link rel="preload" href="{{ site.hero_photo.src }}" as="image" fetchpriority="high">
 {%- endif %}
@@ -90,6 +90,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% include "partials/a11y.html" %}
 {% include "partials/consent.html" %}
 
-<script src="/assets/js/site.min.js" defer></script>
+<script src="{{ site.js_href }}" defer></script>
 </body>
 </html>

@@ -82,8 +82,14 @@ def main():
             "h": m.group(1),
         }
 
-    css = open(os.path.join(DIST, "assets", "css", "site.min.css"), encoding="utf-8").read()
-    js = open(os.path.join(DIST, "assets", "js", "site.min.js"), encoding="utf-8").read()
+    # the built filenames carry a content hash, so find them rather than guess
+    def only(folder, ext):
+        d = os.path.join(DIST, "assets", folder)
+        names = [n for n in os.listdir(d) if n.endswith(ext)]
+        return open(os.path.join(d, names[0]), encoding="utf-8").read()
+
+    css = only("css", ".css")
+    js = only("js", ".js")
 
     css = inline_assets(css, mapping)
     before_main = inline_assets(before_main, mapping)
