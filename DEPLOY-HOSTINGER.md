@@ -92,6 +92,29 @@
 נשבר** — עמוד בלי H1, לינק פנימי שבור, סכמה לא תקינה. רק בנייה נקייה מגיעה
 לענף `deploy`.
 
+### איך יודעים שזה באמת עבד
+
+כל בנייה כותבת `/version.json` עם ה-commit שממנו היא נוצרה. אפשר לשאול את
+האתר החי מה הוא מריץ:
+
+```bash
+python build/check_live.py
+```
+
+הוא משווה את מה שחי מול ראש ענף `main` ומוודא שהעמודים באמת נענים:
+
+```
+✓ live build : daddcd9  (2026-08-28T07:02:15Z, github-actions)
+  deploy branch head : daddcd9
+  main branch head   : daddcd9
+✓ the live site is running the latest commit
+✓ home           200
+✓ a Hebrew URL   200
+```
+
+אפשר גם פשוט לפתוח `https://mizugpro.co.il/version.json` בדפדפן ולהשוות את
+`short` ל-commit האחרון בגיטהאב. אם הם זהים — הצינור עובד.
+
 ### מה צריך להגדיר פעם אחת
 
 1. **חיבור הוסטינגר לריפו** — hPanel → **Advanced → GIT**:

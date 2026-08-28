@@ -640,6 +640,37 @@ AI_AGENTS = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-Use
              "Amazonbot", "DuckAssistBot", "YouBot", "CCBot"]
 
 
+def build_stamp():
+    """Identify this build, so the live site can be asked what it is running."""
+    sha = os.environ.get("GITHUB_SHA", "")
+    if not sha:
+        try:
+            import subprocess
+            sha = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
+                                 capture_output=True, text=True).stdout.strip()
+        except Exception:
+            sha = ""
+    return {
+        "commit": sha[:40] or "unknown",
+        "short": sha[:7] or "unknown",
+        "built_at": datetime.datetime.now(datetime.timezone.utc)
+                    .replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "pages": len(pages),
+        "built_by": "github-actions" if os.environ.get("GITHUB_ACTIONS") else "local",
+    }
+
+
+def write_version():
+    """
+    /version.json is how anyone can tell which commit is actually live:
+    fetch it from the domain and compare the sha to the deploy branch.
+    """
+    stamp = build_stamp()
+    open(os.path.join(DIST, "version.json"), "w", encoding="utf-8").write(
+        json.dumps(stamp, ensure_ascii=False, indent=1) + chr(10))
+    print("build stamp    :", stamp["short"], stamp["built_at"], stamp["built_by"])
+
+
 def write_robots():
     lines = ["# מיזוג פרו", "User-agent: *", "Allow: /", "Disallow: /thank-you/", ""]
     lines.append("# search and answer engines are welcome to read and cite this site")
@@ -839,6 +870,7 @@ def main():
     if os.path.exists(php):
         shutil.copy2(php, os.path.join(DIST, "contact.php"))
 
+    write_version()
     write_robots()
     write_llms_txt()
     write_server_config()
