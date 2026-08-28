@@ -478,10 +478,16 @@ def schema_strings(p, crumbs):
 
 
 # -------------------------------------------------------------- homepage ----
-SERVICE_STYLE = [
-    ("wrench", "c-sky"), ("ac-unit", "c-navy"),
-    ("truck", "c-gold"), ("price", "c-deep"),
-]
+# The tile art used to be a migrated illustration, and the icon underneath it a
+# round-robin off this list — which is how two tiles ended up wearing the same
+# picture. Each service now names its own icon, keyed by where the tile leads.
+SERVICE_ICON = {
+    "/תיקון-מזגנים/": "ac-repair",
+    "/התקנת-מזגנים/": "ac-install",
+    "/פירוק-מזגן/": "ac-remove",
+    "/מחירון-מזגנים/": "ac-price",
+}
+SERVICE_FALLBACK = ["ac-unit", "wrench", "price", "condenser"]
 
 BADGES = [
     ("award", "מקצועיות מוכחת", "15 שנה של התקנות ותיקונים לכל סוגי המזגנים.", "c-sky"),
@@ -514,12 +520,10 @@ def build_home(p, model):
             target = by_path.get(href)
             desc = (target or {}).get("meta_description") or ""
             desc = re.split(r"(?<=[.!?])\s", desc)[0][:130] if desc else ""
-            style = SERVICE_STYLE[len(services) % len(SERVICE_STYLE)]
-            iw, ih = img_dims(nxt["src"])
+            n = len(services)
             services.append({"title": b["text"], "href": href, "text": desc,
-                             "icon": style[0], "color": style[1],
-                             "img": nxt["src"], "alt": nxt.get("alt") or b["text"],
-                             "w": iw, "h": ih})
+                             "icon": SERVICE_ICON.get(
+                                 href, SERVICE_FALLBACK[n % len(SERVICE_FALLBACK)])})
             i += 2
             continue
         # the "how it works" list becomes the process strip
@@ -857,6 +861,14 @@ def main():
                  "cropped-פאביקון-מיזוג-פרו-1-192x192.png",
                  "cropped-פאביקון-מיזוג-פרו-1-270x270.png"):
         used_assets.add(name)
+
+    # a 301 that lands on a missing file just trades one 404 for another, so
+    # every redirect target ships whether or not a page still references it
+    _redirects = os.path.join(SRC, "image-redirects.json")
+    if os.path.exists(_redirects):
+        for _old, _new in json.load(open(_redirects, encoding="utf-8")):
+            if _new.startswith("/assets/img/"):
+                used_assets.add(urllib.parse.unquote(_new[len("/assets/img/"):]))
 
     def _ignore(directory, entries):
         if os.path.basename(directory) != "img":

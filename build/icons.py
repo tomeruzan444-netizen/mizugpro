@@ -27,6 +27,38 @@ PATHS = {
         '<circle cx="12" cy="12" r="4.6"/>'
         '<path d="M12 7.4c1.9 1.3 1.9 3.3 0 4.6-1.9-1.3-4-.6-4.6 1.2"/>'
     ),
+    # ---- the four homepage services ----------------------------------------
+    # One family so the tiles read as a set: the same wall unit sits at the top
+    # of three of them and only what happens beneath it changes. At 30px there
+    # is room for one idea per icon, so each gets exactly one — an arrow up, an
+    # arrow down, a wrench. Put up, taken down, opened.
+    "ac-install": (
+        '<rect x="2.8" y="2.8" width="18.4" height="6.6" rx="2.1"/>'
+        '<path d="M6.2 6.4h8.8"/>'
+        '<path d="M12 21.4v-9.2"/><path d="m8.4 15.6 3.6-3.6 3.6 3.6"/>'
+    ),
+    "ac-remove": (
+        '<rect x="2.8" y="2.8" width="18.4" height="6.6" rx="2.1"/>'
+        '<path d="M6.2 6.4h8.8"/>'
+        '<path d="M12 12.2v9.2"/><path d="m8.4 17.8 3.6 3.6 3.6-3.6"/>'
+    ),
+    # the wrench is the existing one reused at its exact geometry rather than
+    # redrawn small; the scale is undone on the stroke so the weight matches
+    "ac-repair": (
+        '<rect x="2.8" y="2.8" width="18.4" height="6.6" rx="2.1"/>'
+        '<path d="M6.2 6.4h8.8"/>'
+        '<g transform="translate(6.8 11) scale(.52)" stroke-width="3.46">'
+        '<path d="M13.9 10.1 4.5 19.5a2.1 2.1 0 0 1-3-3l9.4-9.4"/>'
+        '<path d="M13.9 10.1a4.9 4.9 0 0 0 6.7-6.2l-3 3-2.7-.7-.7-2.7 3-3a4.9 4.9 0 0 0-6.2 6.7"/>'
+        '</g>'
+    ),
+    # a printed price list, not a unit: the tile is about what it costs
+    "ac-price": (
+        '<path d="M4.6 2.8h14.8v18.6l-2.46-1.5-2.47 1.5-2.47-1.5'
+        '-2.46 1.5-2.47-1.5-2.47 1.5Z"/>'
+        '<path d="M8.4 7.6h7.2"/><path d="M8.4 11.2h7.2"/><path d="M8.4 14.8h4.4"/>'
+    ),
+
     "snowflake": (
         '<path d="M12 2.6v18.8M3.9 7.3l16.2 9.4M20.1 7.3 3.9 16.7"/>'
         '<path d="m9.5 5.1 2.5-2.5 2.5 2.5M9.5 18.9l2.5 2.5 2.5-2.5"/>'

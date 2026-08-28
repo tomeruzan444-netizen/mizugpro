@@ -51,12 +51,8 @@
     </div>
     <div class="cards cards--4">
       {%- for s in page.services %}
-      <article class="card card--link {{ s.color }}">
-        {%- if s.img %}
-        <span class="card__art"><img src="{{ s.img }}" alt="{{ s.alt|e }}" width="{{ s.w }}" height="{{ s.h }}" loading="lazy" decoding="async"></span>
-        {%- else %}
+      <article class="card card--link">
         <span class="card__icon">{{ icon(s.icon) }}</span>
-        {%- endif %}
         <h3><a href="{{ s.href }}">{{ s.title }}</a></h3>
         <p>{{ s.text }}</p>
         <span class="card__link">קראו עוד {{ icon('arrow') }}</span>
