@@ -10,7 +10,9 @@
 declare(strict_types=1);
 
 // ---------------------------------------------------------------- settings --
-$TO        = 'support@mizugpro.co.il';   // where leads arrive
+// every lead from every page on the site lands here; add more addresses to
+// the array and each one gets a copy
+$TO        = ['ben3n4456@gmail.com'];
 $FROM      = 'no-reply@mizugpro.co.il';  // must be a mailbox on this domain
 $SUBJECT   = 'ליד חדש מהאתר — מיזוג פרו';
 $THANKS    = '/thank-you/';
@@ -91,6 +93,14 @@ $headers = implode("\r\n", [
     'X-Mailer: mizugpro-static',
 ]);
 
-@mail($TO, '=?UTF-8?B?' . base64_encode($SUBJECT) . '?=', $body, $headers, '-f' . $FROM);
+// name and city in the subject so leads can be triaged from the inbox list
+$subject = $SUBJECT;
+if ($name !== '') {
+    $subject .= ' | ' . $name . ($city !== '' ? ', ' . $city : '');
+}
+foreach ((array)$TO as $recipient) {
+    @mail($recipient, '=?UTF-8?B?' . base64_encode($subject) . '?=',
+          $body, $headers, '-f' . $FROM);
+}
 
 finish($THANKS);
