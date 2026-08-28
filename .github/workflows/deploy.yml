@@ -1,0 +1,84 @@
+name: build & deploy
+
+# Every push that touches the source rebuilds the site, checks it, and updates
+# the `deploy` branch — whose root is the site itself, ready for Hostinger to
+# pull into public_html.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "assets/**"
+      - "build/**"
+      - "_source/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build dependencies
+        run: pip install --quiet jinja2 beautifulsoup4
+
+      - name: Build the site
+        working-directory: build
+        run: |
+          python -c "import assets_pipeline as a; a.minify()"
+          python build.py
+
+      - name: Check the build before it can go anywhere
+        working-directory: build
+        run: |
+          python - <<'PY'
+          import json, subprocess, sys
+          subprocess.run([sys.executable, "validate.py"], check=True)
+          report = json.load(open("../validation-report.json", encoding="utf-8"))
+          # these must be zero or the site is broken in a way visitors would see
+          blocking = ["missing_pages", "no_h1", "no_title", "no_canonical",
+                      "bad_schema", "broken_links", "empty_main"]
+          failed = {k: len(report[k]) for k in blocking if report.get(k)}
+          if failed:
+              print("BLOCKING:", failed)
+              sys.exit(1)
+          print("checks passed — %d pages" % len(report.get("pages", [])))
+          PY
+
+      - name: Publish dist/ to the deploy branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dist
+          git commit -q -m "build: ${GITHUB_SHA::7}" || echo "nothing new to build"
+          git branch -D deploy 2>/dev/null || true
+          git subtree split --prefix=dist -b deploy
+          git push -f origin deploy
+
+      # Hostinger exposes a deploy URL under hPanel → Advanced → GIT.
+      # Save it as the repo secret HOSTINGER_DEPLOY_WEBHOOK to close the loop;
+      # without it the deploy branch still updates and you pull it manually.
+      - name: Tell Hostinger to pull
+        env:
+          WEBHOOK: ${{ secrets.HOSTINGER_DEPLOY_WEBHOOK }}
+        # a secret cannot be read inside `if:`, so it is checked through env
+        if: env.WEBHOOK != ''
+        run: |
+          code=$(curl -s -o /tmp/out -w "%{http_code}" -X POST "$WEBHOOK")
+          echo "Hostinger responded $code"
+          cat /tmp/out
+          test "$code" -lt 400

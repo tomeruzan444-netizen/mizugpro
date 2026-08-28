@@ -79,7 +79,38 @@
 
 ---
 
-## עדכון האתר אחרי שהוא באוויר
+## פרסום אוטומטי
+
+הצינור בנוי כך:
+
+```
+דחיפה ל-main  →  GitHub Actions בונה ובודק  →  ענף deploy מתעדכן  →  הוסטינגר מושכת
+```
+
+`.github/workflows/deploy.yml` רץ על כל דחיפה שנוגעת ב-`assets/`, `build/` או
+`_source/`. הוא בונה את האתר מחדש, מריץ את `validate.py`, **ונכשל אם משהו
+נשבר** — עמוד בלי H1, לינק פנימי שבור, סכמה לא תקינה. רק בנייה נקייה מגיעה
+לענף `deploy`.
+
+### מה צריך להגדיר פעם אחת
+
+1. **חיבור הוסטינגר לריפו** — hPanel → **Advanced → GIT**:
+   - Repository: `https://github.com/tomeruzan444-netizen/mizugpro`
+   - Branch: `deploy`
+   - Directory: `public_html`
+   - אם ה-repo פרטי, הוסף את מפתח ה-SSH שהיא מציגה כ-Deploy key בגיטהאב.
+
+2. **סגירת הלולאה** — אחרי היצירה הוסטינגר מציגה **Auto deployment URL**.
+   העתק אותו והוסף אותו בגיטהאב תחת
+   **Settings → Secrets and variables → Actions → New repository secret**:
+   - Name: `HOSTINGER_DEPLOY_WEBHOOK`
+   - Secret: הכתובת שהעתקת
+
+   בלי הסוד הזה הכל עדיין עובד — פשוט תצטרך ללחוץ Deploy ידנית ב-hPanel.
+
+3. **הפעלה ידנית** בכל רגע: GitHub → **Actions → build & deploy → Run workflow**.
+
+## עדכון האתר ידנית
 
 ```bash
 cd build
