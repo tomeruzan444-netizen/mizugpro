@@ -517,8 +517,11 @@ button { font: inherit; }
 @media (max-width: 1100px) { .layout--home { grid-template-columns: 1fr; } }
 @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; gap: var(--sp-6); } }
 
-.rail { position: sticky; top: calc(var(--header-h) + 16px); display: grid; gap: var(--sp-5); }
-@media (max-width: 1100px) { .rail { position: static; } }
+/* The rail scrolls with the article. It used to be sticky, but on 114 of the
+   119 pages it is taller than the window a pinned element gets — median 1052px
+   against roughly 810px — so it pinned at the top and its bottom, the phone
+   CTA included, could never be scrolled to. */
+.rail { display: grid; gap: var(--sp-5); }
 
 .toc { background: #fff; border: 1px solid var(--line-2); border-radius: var(--r-lg); padding: var(--sp-5); box-shadow: var(--sh-1); }
 .toc h2 { font-size: 1.05rem; margin-bottom: var(--sp-3); display: flex; align-items: center; gap: .5em; }
