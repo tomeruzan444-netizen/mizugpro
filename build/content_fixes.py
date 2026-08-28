@@ -171,6 +171,38 @@ META_OVERRIDES = {
     },
 }
 
+# The thank-you page opened with the generic site pitch ("need a new air
+# conditioner?") and buried the actual acknowledgement further down — the wrong
+# way round for someone who has just submitted the form.
+THANK_YOU = "/thank-you/"
+THANK_YOU_H1 = "תודה שהשארתם פרטים, מיד נחזור אליכם"
+THANK_YOU_LEAD = ('<strong>טכנאי מיזוג פרו יחזור אליכם בהקדם.</strong> '
+                  'לפנייה דחופה אפשר להתקשר אלינו ישירות.')
+
+
+def rewrite_thank_you(page):
+    if page["path"] != THANK_YOU:
+        return page
+    blocks = page["blocks"]
+    if blocks and blocks[0].get("type") == "heading" and blocks[0].get("level") == 1:
+        _log(THANK_YOU, "כותרת עמוד תודה", blocks[0]["text"], THANK_YOU_H1)
+        blocks[0]["text"] = THANK_YOU_H1
+        blocks[0]["html"] = THANK_YOU_H1
+        page["h1"] = THANK_YOU_H1
+    if len(blocks) > 1 and blocks[1].get("type") == "paragraph":
+        _log(THANK_YOU, "פתיח עמוד תודה", _plain(blocks[1]["html"])[:90], _plain(THANK_YOU_LEAD))
+        blocks[1]["html"] = THANK_YOU_LEAD
+    # the old acknowledgement further down now just repeats the headline
+    kept = []
+    for b in blocks:
+        if b.get("type") == "paragraph" and "תודה שיצרתם קשר" in _plain(b.get("html")):
+            _log(THANK_YOU, "פסקה כפולה הוסרה", _plain(b["html"])[:90], "(הוסרה)")
+            continue
+        kept.append(b)
+    page["blocks"] = kept
+    return page
+
+
 # Missing meta descriptions on the two blog listings.
 META_ADDITIONS = {
     "/בלוג/": "הבלוג של מיזוג פרו — מדריכים, טיפים ומחירים בכל מה שקשור למזגנים: "
@@ -294,6 +326,7 @@ def clean_embed(fragment, path):
 def apply(page):
     """Mutate one extracted page dict in place. Returns the page."""
     path = page["path"]
+    rewrite_thank_you(page)
     merge_split_paragraphs(page)
     strip_leading_breaks(page)
     for b in page["blocks"]:
