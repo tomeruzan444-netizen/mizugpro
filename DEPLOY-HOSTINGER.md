@@ -155,9 +155,14 @@ git push -f origin deploy            # מרענן את ענף הפריסה
 
 ---
 
-## ביקורת SEO שבועית
+## ביקורת SEO
 
-כל יום ראשון ב-09:00 (שעון ישראל) רץ `.github/workflows/seo-audit.yml`:
+**מושהה כרגע (29.8.2026).** התזמון השבועי בוטל לבקשתך, ושום דבר לא רץ מעצמו.
+הביקורת עצמה נשארה במקום ואפשר להריץ אותה מתי שרוצים:
+GitHub → **Actions → SEO audit → Run workflow**. להחזרת התזמון — להסיר את
+סימון ההערה משתי שורות ה-`schedule` בראש הקובץ.
+
+`.github/workflows/seo-audit.yml`:
 הוא זוחל על **האתר החי** — לא על הקוד — ומדווח על מה שגוגל והגולשים באמת
 מקבלים.
 
@@ -181,7 +186,7 @@ git push -f origin deploy            # מרענן את ענף הפריסה
      https://myaccount.google.com/apppasswords (סיסמת ג'ימייל רגילה תיכשל;
      צריך אימות דו-שלבי פעיל)
 
-**הרצה ידנית בכל רגע:** GitHub → **Actions → weekly SEO audit → Run workflow**.
+**הרצה ידנית בכל רגע:** GitHub → **Actions → SEO audit → Run workflow**.
 
 **מקומית:**
 
