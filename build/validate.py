@@ -12,6 +12,13 @@ old = json.load(open(os.path.join(SRC, "content.json"), encoding="utf-8"))
 old_paths = {p["path"] for p in old}
 old_meta = {p["path"]: p for p in old}
 
+# pages written after the migration are held to the content guide; the migrated
+# ones are not, because dozens of them predate it and would fail on day one
+NEW_PAGES = os.path.join(SRC, "new-pages.json")
+new_paths = ({p["path"] for p in json.load(open(NEW_PAGES, encoding="utf-8"))}
+             if os.path.exists(NEW_PAGES) else set())
+MIN_WORDS = 800
+
 built = {}
 for f in glob.glob(os.path.join(DIST, "**", "index.html"), recursive=True):
     rel = os.path.relpath(f, DIST).replace("\\", "/")[: -len("index.html")]
@@ -20,15 +27,48 @@ for f in glob.glob(os.path.join(DIST, "**", "index.html"), recursive=True):
 issues = {"missing_pages": [], "extra_pages": [], "no_h1": [], "multi_h1": [],
           "no_title": [], "no_desc": [], "no_canonical": [], "bad_schema": [],
           "broken_links": [], "title_changed": [], "desc_changed": [],
-          "canonical_changed": [], "empty_main": [], "img_no_dims": []}
+          "canonical_changed": [], "empty_main": [], "img_no_dims": [],
+          "thin_new_pages": []}
 
 issues["missing_pages"] = sorted(old_paths - set(built))
 issues["extra_pages"] = sorted(set(built) - old_paths)
+
+BOILERPLATE = ".pagehero, .hero, .ctaband, .leadform, .actionbar, .rail, .reviews"
+REPEATED_SECTIONS = {"פריסה ארצית", "קראו גם", "המלצות לקוחות", "מדריכים ושירותים"}
+
+
+def own_words(soup):
+    """The page's own content: headings, prose, lists, tables and FAQ.
+
+    Everything that repeats across the site is removed first. Counting the
+    whole page instead would score a thin page at 760 on the strength of its
+    hero and its footer, which is exactly what the rule exists to catch.
+    """
+    main = soup.find("main")
+    if not main:
+        return 0
+    clone = BeautifulSoup(str(main), "html.parser")
+    for t in clone.find_all(["script", "style", "aside", "nav", "header",
+                             "footer", "form"]):
+        t.decompose()
+    for t in clone.select(BOILERPLATE):
+        t.decompose()
+    for sec in clone.find_all("section"):
+        eyebrow = sec.find(class_="section__eyebrow")
+        if eyebrow and eyebrow.get_text(strip=True) in REPEATED_SECTIONS:
+            sec.decompose()
+    return len(re.sub(r"\s+", " ", clone.get_text(" ", strip=True)).split())
 
 for path, f in sorted(built.items()):
     html = open(f, encoding="utf-8").read()
     soup = BeautifulSoup(html, "html.parser")
     o = old_meta.get(path, {})
+
+    if path in new_paths:
+        words = own_words(soup)
+        if words < MIN_WORDS:
+            issues["thin_new_pages"].append("%s (%d words, minimum %d)"
+                                            % (path, words, MIN_WORDS))
 
     h1s = soup.find_all("h1")
     if not h1s:
