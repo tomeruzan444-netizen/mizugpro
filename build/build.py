@@ -35,6 +35,13 @@ REPAIRED_SCHEMA = set()
 # ---------------------------------------------------------------- data ------
 site = json.load(open(os.path.join(SRC, "site.json"), encoding="utf-8"))
 pages = json.load(open(os.path.join(SRC, "content.json"), encoding="utf-8"))
+
+# pages written after the migration live in their own file, so the WordPress
+# extract stays exactly as it was crawled and it is always clear which pages
+# were inherited and which were authored here
+_new = os.path.join(SRC, "new-pages.json")
+if os.path.exists(_new):
+    pages += json.load(open(_new, encoding="utf-8"))
 imgmap = json.load(open(os.path.join(SRC, "image-map.json"), encoding="utf-8"))
 _manifest_path = os.path.join(ROOT, "assets", "img", "manifest.json")
 manifest = json.load(open(_manifest_path, encoding="utf-8")) if os.path.exists(_manifest_path) else {}
