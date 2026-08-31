@@ -98,12 +98,6 @@ def img_dims(src):
     return None, None
 
 
-_hero = "/assets/img/צוות-מיזוג-פרו-החדש.webp"
-if os.path.exists(os.path.join(ROOT, "assets", "img", os.path.basename(_hero))):
-    _hw, _hh = img_dims(_hero)
-    site["hero_photo"] = {"src": _hero, "alt": "צוות הטכנאים של מיזוג פרו",
-                          "w": _hw or 771, "h": _hh or 405}
-
 site["brands"] = []
 for _file, _alt in BRAND_LOGOS:
     _src = "/assets/img/" + _best(_file)
@@ -135,6 +129,27 @@ def fingerprint(rel):
 FINGERPRINTED = [fingerprint("assets/css/site.min.css"),
                  fingerprint("assets/js/site.min.js")]
 FINGERPRINTED = [f for f in FINGERPRINTED if f]
+
+# The hero and the logo are the two images on the critical path, and they are
+# served immutable for a year like every other asset. Re-encoding one without
+# changing its name means a returning visitor keeps the old bytes until 2027 -
+# which is exactly what happened the first time the hero was compressed. Both
+# are fingerprinted, and the original names stay on disk because Google Images
+# links to them.
+_hero = "/assets/img/צוות-מיזוג-פרו-החדש.webp"
+if os.path.exists(os.path.join(ROOT, "assets", "img", os.path.basename(_hero))):
+    _hw, _hh = img_dims(_hero)
+    _hf = fingerprint(_hero.lstrip("/"))
+    if _hf:
+        FINGERPRINTED.append(_hf)
+    site["hero_photo"] = {"src": _hf["href"] if _hf else _hero,
+                          "alt": "צוות הטכנאים של מיזוג פרו",
+                          "w": _hw or 771, "h": _hh or 405}
+
+_logo_f = fingerprint(site["logo"].lstrip("/"))
+if _logo_f:
+    FINGERPRINTED.append(_logo_f)
+    site["logo"] = _logo_f["href"]
 site["css_href"] = next((f["href"] for f in FINGERPRINTED if f["src"].endswith(".css")), "/assets/css/site.min.css")
 
 # The rules the first screen needs, inlined so nothing stands between the
@@ -883,10 +898,12 @@ def main():
     # a 301 that lands on a missing file just trades one 404 for another, so
     # every redirect target ships whether or not a page still references it
     _redirects = os.path.join(SRC, "image-redirects.json")
+    _redirect_targets = set()
     if os.path.exists(_redirects):
         for _old, _new in json.load(open(_redirects, encoding="utf-8")):
             if _new.startswith("/assets/img/"):
                 used_assets.add(urllib.parse.unquote(_new[len("/assets/img/"):]))
+                _redirect_targets.add(urllib.parse.unquote(_new).lstrip("/"))
 
     def _ignore(directory, entries):
         if os.path.basename(directory) != "img":
@@ -903,8 +920,12 @@ def main():
         folder = os.path.join(DIST, os.path.dirname(f["src"]))
         os.makedirs(folder, exist_ok=True)
         open(os.path.join(folder, f["name"]), "wb").write(f["data"])
+        # the un-fingerprinted copy normally goes, so the sheet does not ship
+        # twice - but an image whose old name is a 301 target has to stay, or
+        # the redirect swaps one 404 for another
         stale = os.path.join(DIST, f["src"])
-        if os.path.exists(stale):
+        keep = f["src"].replace("\\", "/") in _redirect_targets
+        if os.path.exists(stale) and not keep:
             os.remove(stale)
     print("fingerprinted  :", ", ".join(f["name"] for f in FINGERPRINTED))
     print("image files shipped:", len(os.listdir(os.path.join(DIST, "assets", "img"))))
