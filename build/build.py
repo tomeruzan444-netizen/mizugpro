@@ -16,6 +16,7 @@ import sidebar_groups  # noqa: E402
 import dedupe_city  # noqa: E402
 import vat_note  # noqa: E402
 import tables  # noqa: E402
+import phrase_inserts  # noqa: E402
 import dashes  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -48,6 +49,9 @@ manifest = json.load(open(_manifest_path, encoding="utf-8")) if os.path.exists(_
 
 # editorial pass: spelling, punctuation and logical fixes on the migrated copy
 pages = [content_fixes.apply(p) for p in pages]
+# after the corrections and before the tables are normalised: the
+# inserts add blocks, and tables.apply has to see the final set
+pages = [phrase_inserts.apply(p) for p in pages]
 _tables_touched = tables.apply(pages)
 # national boilerplate moves to the page that owns it; local copy stays put
 pages = dedupe_city.apply(pages)
