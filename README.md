@@ -27,6 +27,7 @@ python assets_pipeline.py     # פונט מקומי + WebP לכל התמונות
 python build.py               # מרנדר את 120 העמודים ל-dist/
 python subset_fonts.py        # מצמצם את הפונט לתווים שבשימוש בפועל
 python prune_css.py           # מוחק חוקי CSS של ווידג'טים שאין להם התאמה
+python critical_css.py        # מחלץ את ה-CSS של המסך הראשון להטמעה
 python -c "import assets_pipeline as a; a.minify()"
 python build.py               # בנייה סופית עם הנכסים המצומצמים
 ```

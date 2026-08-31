@@ -136,6 +136,13 @@ FINGERPRINTED = [fingerprint("assets/css/site.min.css"),
                  fingerprint("assets/js/site.min.js")]
 FINGERPRINTED = [f for f in FINGERPRINTED if f]
 site["css_href"] = next((f["href"] for f in FINGERPRINTED if f["src"].endswith(".css")), "/assets/css/site.min.css")
+
+# The rules the first screen needs, inlined so nothing stands between the
+# request and the first paint; the rest of the sheet loads out of band.
+# Produced by critical_css.py against a real render - see that file.
+_crit = os.path.join(ROOT, "assets", "css", "critical.css")
+site["critical_css"] = (open(_crit, encoding="utf-8").read().strip()
+                        if os.path.exists(_crit) else "")
 site["js_href"] = next((f["href"] for f in FINGERPRINTED if f["src"].endswith(".js")), "/assets/js/site.min.js")
 
 
