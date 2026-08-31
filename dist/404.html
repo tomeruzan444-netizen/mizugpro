@@ -27,10 +27,15 @@
 <link rel="icon" href="/assets/img/cropped-פאביקון-מיזוג-פרו-1-192x192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/img/cropped-פאביקון-מיזוג-פרו-1-180x180.png">
 <link rel="manifest" href="/site.webmanifest">
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
-j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PLDQTM22');</script>
+
+<script>(function(w,d,i){var loaded=0;function go(){if(loaded)return;loaded=1;
+w.dataLayer=w.dataLayer||[];w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+var f=d.getElementsByTagName('script')[0],j=d.createElement('script');j.async=true;
+j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);}
+['pointerdown','keydown','touchstart','scroll','mousemove'].forEach(function(e){
+w.addEventListener(e,go,{once:true,passive:true});});
+w.addEventListener('load',function(){setTimeout(go,5000);});
+})(window,document,'GTM-PLDQTM22');</script>
 
 
 <script>try{var a=JSON.parse(localStorage.getItem("mizugpro:a11y"))||{};(a.on||[]).forEach(function(c){document.documentElement.classList.add("a11y-"+c)});if(a.step){document.documentElement.style.fontSize=(100+a.step*10)+"%"}}catch(e){}</script>

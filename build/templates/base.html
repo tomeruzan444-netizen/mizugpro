@@ -59,10 +59,20 @@
 <link rel="manifest" href="/site.webmanifest">
 
 {%- if site.gtm_id %}
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
-j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','{{ site.gtm_id }}');</script>
+{# Tag Manager costs about 300ms of script evaluation, which on a throttled
+   phone is most of the blocking time and a fifth of the performance score. It
+   is loaded on the visitor's first interaction instead of during the load, so
+   the main thread is free while the page is still painting. Anyone who
+   scrolls, taps or moves is still measured; the timer is the backstop for a
+   visitor who reads without touching anything. #}
+<script>(function(w,d,i){var loaded=0;function go(){if(loaded)return;loaded=1;
+w.dataLayer=w.dataLayer||[];w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+var f=d.getElementsByTagName('script')[0],j=d.createElement('script');j.async=true;
+j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);}
+['pointerdown','keydown','touchstart','scroll','mousemove'].forEach(function(e){
+w.addEventListener(e,go,{once:true,passive:true});});
+w.addEventListener('load',function(){setTimeout(go,{{ site.gtm_delay|default(5000) }});});
+})(window,document,'{{ site.gtm_id }}');</script>
 {%- endif %}
 
 {# apply saved accessibility preferences before first paint, so a visitor who
