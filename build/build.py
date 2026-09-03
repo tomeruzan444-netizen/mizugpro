@@ -32,6 +32,7 @@ FIX_ORG_SCHEMA = True
 BASE_URL = "https://mizugpro.co.il"
 
 REPAIRED_SCHEMA = set()
+DROPPED_PRODUCT = set()
 
 # ---------------------------------------------------------------- data ------
 site = json.load(open(os.path.join(SRC, "site.json"), encoding="utf-8"))
@@ -301,6 +302,17 @@ def crumbs_for(p):
     return out
 
 
+# Cities with a page of their own. Collected from the paths rather than typed
+# out, so a new city page joins the business entity without anyone remembering.
+SERVED_CITIES = set()
+for _p in pages:
+    _m = re.match(r"^/טכנאי-מזגנים-ב?(.+?)/$", _p["path"])
+    if _m:
+        _city = _m.group(1).replace("-", " ")
+        if _city not in ("מרכז", "צפון", "דרום", "שרון"):
+            SERVED_CITIES.add(_city)
+
+
 # ------------------------------------------------------------------ schema --
 def fix_org(node):
     if not isinstance(node, dict):
@@ -317,7 +329,27 @@ def fix_org(node):
                            "addressLocality": "תל אביב",
                            "addressCountry": "IL"}
         node["openingHours"] = ["Mo,Tu,We,Th,Fr,Sa,Su 00:00-23:59"]
-        node["areaServed"] = {"@type": "Country", "name": "IL"}
+        # the same hours in the form Google actually reads
+        node["openingHoursSpecification"] = [{
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday",
+                          "Friday", "Saturday", "Sunday"],
+            "opens": "00:00", "closes": "23:59",
+        }]
+        # sameAs is what ties this name to the same business elsewhere. Without
+        # it the entity cannot be resolved, and an answer engine that cannot
+        # resolve a business will cite a competitor it can.
+        profiles = [x["href"] for x in site.get("socials", []) if x.get("href")]
+        if profiles:
+            node["sameAs"] = profiles
+        node["priceRange"] = "₪₪"
+        node["currenciesAccepted"] = "ILS"
+        node["knowsLanguage"] = "he-IL"
+        # every city with a page, so the 64 city pages resolve to one business
+        # rather than reading as 64 unrelated locations
+        node["areaServed"] = ([{"@type": "Country", "name": "IL"}]
+                              + [{"@type": "City", "name": c}
+                                 for c in sorted(SERVED_CITIES)])
         logo_url = BASE_URL + urllib.parse.quote("/assets/img/לוגו-מיזוג-פרו.png")
         if isinstance(node.get("logo"), dict):
             node["logo"]["url"] = logo_url
@@ -458,6 +490,14 @@ def schema_strings(p, crumbs):
     for doc in p.get("schema", []):
         if "_raw" in doc:
             raw = doc["_raw"]
+            # The migrated Product block is dropped rather than repaired: a
+            # service business is not a Product, its sku and mpn were invented,
+            # and its aggregateRating is the business rating itself - which
+            # Google has disallowed as self-serving since 2019. Left in place
+            # it risks a structured-data manual action across the whole site.
+            if '"@type":"Product"' in raw.replace(" ", ""):
+                DROPPED_PRODUCT.add(p["path"])
+                continue
             try:
                 fixed = json.loads(repair_json(raw))
                 out.append(json.dumps(fixed, ensure_ascii=False, separators=(",", ":")))
@@ -655,15 +695,26 @@ DirectoryIndex index.html
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
 </IfModule>
 
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
 AddDefaultCharset UTF-8
 AddType font/woff2 .woff2
 AddType image/webp .webp
 
-# keep the canonical trailing slash the old site used
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # www served the whole site with a 200 of its own. The canonical tag
+  # meant Google would probably consolidate the two, but "probably"
+  # still splits crawl budget and any inbound link carrying the www.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+  # keep the canonical trailing slash the old site used
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_URI} !(/$|\\.)
+  RewriteCond %{REQUEST_URI} !(/$|\.)
   RewriteRule ^(.*)$ /$1/ [R=301,L]
 </IfModule>
 

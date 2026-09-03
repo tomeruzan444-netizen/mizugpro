@@ -49,7 +49,13 @@ WORDS = {k: len(v.split()) for k, v in TEXT.items()}
 
 
 # ---------------------------------------------------------------- prices ----
-PRICE = re.compile(r"(\d[\d,]{1,6})\s*(?:–|-|עד)\s*(\d[\d,]{1,6})\s*ש\"?ח|(\d[\d,]{1,6})\s*ש\"?ח")
+# "בין 250 ל- 400 ש\"ח" is a range, but the hyphen belongs to the word ל־
+# and not to the range, so the plain form read it as a single price of
+# 400 and reported a contradiction against pages that agreed with it.
+PRICE = re.compile(
+    r"בין\s*(?P<lo2>\d[\d,]{1,6})\s*ל[-־]?\s*(?P<hi2>\d[\d,]{1,6})\s*ש\"?ח"
+    r"|(\d[\d,]{1,6})\s*(?:–|-|עד)\s*(\d[\d,]{1,6})\s*ש\"?ח"
+    r"|(\d[\d,]{1,6})\s*ש\"?ח")
 
 
 def money(v):
@@ -75,7 +81,8 @@ for p in pages:
             pm = PRICE.search(seg)
             if not pm:
                 continue
-            lo, hi, single = pm.group(1), pm.group(2), pm.group(3)
+            g = pm.groups()
+            lo, hi, single = (g[0] or g[2]), (g[1] or g[3]), g[4]
             rng = (money(lo), money(hi)) if lo else (money(single), money(single))
             if rng[0] < 30 or rng[0] > 100000:
                 continue

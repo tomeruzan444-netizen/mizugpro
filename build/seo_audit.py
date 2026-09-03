@@ -237,8 +237,13 @@ def shingles(text, n=8, step=3):
     return {" ".join(w[i:i + n]) for i in range(0, max(1, len(w) - n), step)}
 
 
-PRICE = re.compile(r"(\d[\d,]{1,6})\s*(?:–|-|עד)\s*(\d[\d,]{1,6})\s*ש\"?ח"
-                   r"|(\d[\d,]{1,6})\s*ש\"?ח")
+# "בין 250 ל- 400 ש\"ח" is a range, but the hyphen belongs to the word ל־
+# and not to the range, so the plain form read it as a single price of
+# 400 and reported a contradiction against pages that agreed with it.
+PRICE = re.compile(
+    r"בין\s*(?P<lo2>\d[\d,]{1,6})\s*ל[-־]?\s*(?P<hi2>\d[\d,]{1,6})\s*ש\"?ח"
+    r"|(\d[\d,]{1,6})\s*(?:–|-|עד)\s*(\d[\d,]{1,6})\s*ש\"?ח"
+    r"|(\d[\d,]{1,6})\s*ש\"?ח")
 SERVICES = {
     "ביקור טכנאי": r"ביקור (?:של )?טכנאי",
     "מילוי גז": r"מילוי גז",
@@ -472,7 +477,12 @@ def analyse(pages, live_version):
                 pm = PRICE.search(m.group(0))
                 if not pm:
                     continue
-                lo, hi, one = pm.group(1), pm.group(2), pm.group(3)
+                # groups: 1-2 the Hebrew "בין X ל Y" form, 3-4 the plain
+                # X - Y form, 5 a lone figure. Take whichever matched.
+                g = pm.groups()
+                lo = g[0] or g[2]
+                hi = g[1] or g[3]
+                one = g[4]
                 cut = lambda v: int(v.replace(",", ""))
                 rng = (cut(lo), cut(hi)) if lo else (cut(one), cut(one))
                 if 30 <= rng[0] <= 100000:
