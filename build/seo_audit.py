@@ -204,8 +204,11 @@ def parse(soup, url):
                 types += t if isinstance(t, list) else [t] if t else []
 
     imgs = soup.find_all("img")
+    # alt="" is a decision, not an omission: it marks an image as decorative so
+    # a screen reader skips it, which is right for the agency mark sitting next
+    # to its own name in the footer. Only a missing alt attribute is a fault.
     no_alt = [i.get("src", "")[:90] for i in imgs
-              if not (i.get("alt") or "").strip() and i.get("role") != "presentation"]
+              if i.get("alt") is None and i.get("role") != "presentation"]
 
     links = set()
     for a in soup.find_all("a", href=True):
