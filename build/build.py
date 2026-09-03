@@ -485,6 +485,31 @@ def rewrite_schema_urls(text):
     return text
 
 
+def _canonical_org_graph():
+    """The business entity as the migrated pages define it, normalised once.
+
+    Returned as a small @graph so a page that has no inherited markup still
+    resolves to the same Organization, with the same @id, as every other page.
+    """
+    for q in pages:
+        for doc in q.get("schema", []):
+            if "_raw" in doc or not isinstance(doc.get("@graph"), list):
+                continue
+            org = [fix_org(json.loads(json.dumps(n))) for n in doc["@graph"]
+                   if isinstance(n.get("@type"), list)
+                   and "Organization" in n["@type"]]
+            site_node = [json.loads(json.dumps(n)) for n in doc["@graph"]
+                         if n.get("@type") == "WebSite"]
+            logo = [json.loads(json.dumps(n)) for n in doc["@graph"]
+                    if n.get("@type") == "ImageObject"]
+            if org:
+                return org + site_node + logo
+    return []
+
+
+ORG_GRAPH = _canonical_org_graph()
+
+
 def schema_strings(p, crumbs):
     out = []
     for doc in p.get("schema", []):
@@ -509,6 +534,13 @@ def schema_strings(p, crumbs):
         if FIX_ORG_SCHEMA and isinstance(doc.get("@graph"), list):
             doc["@graph"] = [fix_org(n) for n in doc["@graph"]]
         out.append(json.dumps(doc, ensure_ascii=False, separators=(",", ":")))
+
+    # A page written after the migration has no inherited graph, so it would
+    # otherwise carry no Organization at all.
+    if ORG_GRAPH and not any('"Organization"' in doc for doc in out):
+        out.insert(0, json.dumps(
+            {"@context": "https://schema.org", "@graph": ORG_GRAPH},
+            ensure_ascii=False, separators=(",", ":")))
 
     # --- structured data the old site never emitted -----------------------
     page_url = BASE_URL + urllib.parse.quote(p["path"])
