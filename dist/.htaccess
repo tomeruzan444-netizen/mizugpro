@@ -3,12 +3,12 @@ Options -MultiViews
 DirectoryIndex index.html
 
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml \
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml \\
     application/javascript application/json image/svg+xml application/xml
 </IfModule>
 
 <IfModule mod_brotli.c>
-  AddOutputFilterByType BROTLI_COMPRESS text/html text/css \
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css \\
     application/javascript application/json image/svg+xml
 </IfModule>
 
@@ -23,7 +23,7 @@ DirectoryIndex index.html
 </IfModule>
 
 <IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|webp|png|jpe?g|svg|woff2)$">
+  <FilesMatch "\\.(css|js|webp|png|jpe?g|svg|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
   Header set X-Content-Type-Options "nosniff"

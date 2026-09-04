@@ -17,6 +17,7 @@ import dedupe_city  # noqa: E402
 import vat_note  # noqa: E402
 import tables  # noqa: E402
 import phrase_inserts  # noqa: E402
+import price_first  # noqa: E402
 import dashes  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -694,7 +695,9 @@ env.globals["site"] = site
 env.globals["year"] = datetime.date.today().year
 
 
-HTACCESS = """# ---- מיזוג פרו — static deploy -------------------------------------------
+# raw: the rewrite rules are full of backslashes, and an unraw string turns
+# \. into a deprecated escape that Python warns about and may one day reject
+HTACCESS = r"""# ---- מיזוג פרו — static deploy -------------------------------------------
 Options -MultiViews
 DirectoryIndex index.html
 
@@ -942,6 +945,9 @@ def main():
         model["og_image"] = (BASE_URL + urllib.parse.quote(local)
                              if local and local.startswith("/") else local)
         model["crumbs"] = crumbs_for(p)
+        # the table moves before the VAT note is placed, so the note
+        # follows it up the page instead of being stranded below
+        model["body"] = price_first.apply(model["body"], p["path"])
         model["body"] = vat_note.add(model["body"], p["path"])
         model["sidebar"] = sidebar_groups.sidebar_for(p["path"])
         model["related"] = RELATED.get(p["path"])
@@ -1072,6 +1078,7 @@ def main():
               ensure_ascii=False, indent=1)
 
     print("dashes flattened:", dash_count, "in", dash_files, "files")
+    print("price tables moved up:", len(price_first.CHANGES))
     print("tables normalised:", _tables_touched)
     print("pages rendered :", len(report["pages"]))
     print("broken links   :", len(report["broken_links"]))
