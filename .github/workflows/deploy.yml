@@ -55,7 +55,7 @@ jobs:
           # these must be zero or the site is broken in a way visitors would see
           blocking = ["missing_pages", "no_h1", "no_title", "no_canonical",
                       "bad_schema", "broken_links", "empty_main",
-                      "thin_new_pages"]
+                      "thin_new_pages", "missing_phrases"]
           failed = {k: len(report[k]) for k in blocking if report.get(k)}
           if failed:
               print("BLOCKING:", failed)

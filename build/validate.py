@@ -19,6 +19,20 @@ new_paths = ({p["path"] for p in json.load(open(NEW_PAGES, encoding="utf-8"))}
              if os.path.exists(NEW_PAGES) else set())
 MIN_WORDS = 800
 
+# The service phrases every city page carries. Two pages written after the
+# guide arrived without them, so the check moved out of anyone's memory.
+REQUIRED_PHRASES = ["תיקון מזגנים", "התקנת מזגן", "התקנת מזגנים",
+                    "טכנאי מיזוג אוויר", "תיקון מזגן", "מתקין מזגנים"]
+HEB = "\u05d0-\u05ea"
+
+
+def _says(phrase, text):
+    """Hebrew glues prepositions on, and "תיקון מזגן" is a prefix of the
+    plural - so allow one attached letter in front and forbid a Hebrew letter
+    straight after."""
+    return re.search(r"(?<![%s])[\u05d1\u05dc\u05de\u05d4\u05d5\u05e9\u05db]?%s(?![%s])"
+                     % (HEB, re.escape(phrase), HEB), text)
+
 built = {}
 for f in glob.glob(os.path.join(DIST, "**", "index.html"), recursive=True):
     rel = os.path.relpath(f, DIST).replace("\\", "/")[: -len("index.html")]
@@ -28,7 +42,7 @@ issues = {"missing_pages": [], "extra_pages": [], "no_h1": [], "multi_h1": [],
           "no_title": [], "no_desc": [], "no_canonical": [], "bad_schema": [],
           "broken_links": [], "title_changed": [], "desc_changed": [],
           "canonical_changed": [], "empty_main": [], "img_no_dims": [],
-          "thin_new_pages": []}
+          "thin_new_pages": [], "missing_phrases": []}
 
 issues["missing_pages"] = sorted(old_paths - set(built))
 issues["extra_pages"] = sorted(set(built) - old_paths)
@@ -69,6 +83,13 @@ for path, f in sorted(built.items()):
         if words < MIN_WORDS:
             issues["thin_new_pages"].append("%s (%d words, minimum %d)"
                                             % (path, words, MIN_WORDS))
+        head = ((soup.title.get_text() if soup.title else "") + " "
+                + (soup.find("meta", {"name": "description"}) or {}).get("content", ""))
+        body = head + " " + re.sub(r"\s+", " ", soup.find("main").get_text(" ")) \
+            if soup.find("main") else head
+        absent = [p for p in REQUIRED_PHRASES if not _says(p, body)]
+        if absent:
+            issues["missing_phrases"].append("%s: %s" % (path, ", ".join(absent)))
 
     h1s = soup.find_all("h1")
     if not h1s:

@@ -185,7 +185,7 @@ CITY_REGION = {
     "אלעד": "center", "שוהם": "center", "יהוד": "center",
     "אור-יהודה": "center", "קריית-אונו": "center", "גני-תקווה": "center",
     "סביון": "center", "גבעת-שמואל": "center", "בית-דגן": "center",
-    "הרצליה": "center", "רמת-השרון": "center", "רעננה": "center", "כפר-סבא": "center",
+    "הרצליה": "center", "רמת-השרון": "center", "באר-יעקב": "center", "רעננה": "center", "כפר-סבא": "center",
     "הוד-השרון": "center", "נתניה": "center", "אבן-יהודה": "center",
     "תל-מונד": "center", "כפר-יונה": "center", "קדימה-צורן": "center",
 }

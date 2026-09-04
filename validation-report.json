@@ -1,6 +1,7 @@
 {
  "missing_pages": [],
  "extra_pages": [
+  "/טכנאי-מזגנים-בבאר-יעקב/",
   "/טכנאי-מזגנים-ברמת-השרון/"
  ],
  "no_h1": [],
@@ -165,5 +166,6 @@
  "canonical_changed": [],
  "empty_main": [],
  "img_no_dims": [],
- "thin_new_pages": []
+ "thin_new_pages": [],
+ "missing_phrases": []
 }
