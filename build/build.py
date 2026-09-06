@@ -18,6 +18,7 @@ import vat_note  # noqa: E402
 import tables  # noqa: E402
 import phrase_inserts  # noqa: E402
 import price_first  # noqa: E402
+import gsc_answers  # noqa: E402
 import dashes  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -947,6 +948,9 @@ def main():
         model["crumbs"] = crumbs_for(p)
         # the table moves before the VAT note is placed, so the note
         # follows it up the page instead of being stranded below
+        # answers first, so the price table still lands after the second
+        # paragraph once they are in place
+        model["body"] = gsc_answers.apply(model["body"], p["path"])
         model["body"] = price_first.apply(model["body"], p["path"])
         model["body"] = vat_note.add(model["body"], p["path"])
         model["sidebar"] = sidebar_groups.sidebar_for(p["path"])
@@ -1078,6 +1082,7 @@ def main():
               ensure_ascii=False, indent=1)
 
     print("dashes flattened:", dash_count, "in", dash_files, "files")
+    print("search-question answers:", len(gsc_answers.CHANGES))
     print("price tables moved up:", len(price_first.CHANGES))
     print("tables normalised:", _tables_touched)
     print("pages rendered :", len(report["pages"]))
