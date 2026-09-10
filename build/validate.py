@@ -144,6 +144,9 @@ json.dump(issues, open(os.path.join(ROOT, "validation-report.json"), "w", encodi
 print("built pages          :", len(built))
 for k in ("missing_pages", "extra_pages", "no_h1", "multi_h1", "no_title", "no_desc",
           "no_canonical", "bad_schema", "broken_links", "empty_main", "img_no_dims",
-          "title_changed", "desc_changed", "canonical_changed"):
+          "title_changed", "desc_changed", "canonical_changed",
+          # the two that block a deploy - they belong on screen, not only in
+          # the report file that only the workflow reads
+          "thin_new_pages", "missing_phrases"):
     v = issues[k]
     print("%-22s %d" % (k, len(v)), ("" if len(v) > 6 or not v else v))
