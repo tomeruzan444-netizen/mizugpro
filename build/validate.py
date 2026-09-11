@@ -17,7 +17,11 @@ old_meta = {p["path"]: p for p in old}
 NEW_PAGES = os.path.join(SRC, "new-pages.json")
 new_paths = ({p["path"] for p in json.load(open(NEW_PAGES, encoding="utf-8"))}
              if os.path.exists(NEW_PAGES) else set())
-MIN_WORDS = 800
+# the floor is so a page says something; the ceiling is so it stops
+# repeating itself. Past ~1,100 own words these pages start restating
+# what they already said, which is the shape Google calls scaled
+# content and readers call a wall of text.
+MIN_WORDS, MAX_WORDS = 800, 1100
 
 # The service phrases every city page carries. Two pages written after the
 # guide arrived without them, so the check moved out of anyone's memory.
@@ -42,7 +46,8 @@ issues = {"missing_pages": [], "extra_pages": [], "no_h1": [], "multi_h1": [],
           "no_title": [], "no_desc": [], "no_canonical": [], "bad_schema": [],
           "broken_links": [], "title_changed": [], "desc_changed": [],
           "canonical_changed": [], "empty_main": [], "img_no_dims": [],
-          "thin_new_pages": [], "missing_phrases": [], "no_inbound_links": []}
+          "thin_new_pages": [], "missing_phrases": [], "no_inbound_links": [],
+          "overlong_new_pages": []}
 
 # a new page must be linked to from inside another page's prose, not only from
 # the related grid every page carries. Collected across the whole crawl and
@@ -97,6 +102,9 @@ for path, f in sorted(built.items()):
         if words < MIN_WORDS:
             issues["thin_new_pages"].append("%s (%d words, minimum %d)"
                                             % (path, words, MIN_WORDS))
+        elif words > MAX_WORDS:
+            issues["overlong_new_pages"].append("%s (%d words, maximum %d)"
+                                                % (path, words, MAX_WORDS))
         head = ((soup.title.get_text() if soup.title else "") + " "
                 + (soup.find("meta", {"name": "description"}) or {}).get("content", ""))
         body = head + " " + re.sub(r"\s+", " ", soup.find("main").get_text(" ")) \
@@ -173,6 +181,7 @@ for k in ("missing_pages", "extra_pages", "no_h1", "multi_h1", "no_title", "no_d
           "title_changed", "desc_changed", "canonical_changed",
           # the two that block a deploy - they belong on screen, not only in
           # the report file that only the workflow reads
-          "thin_new_pages", "missing_phrases", "no_inbound_links"):
+          "thin_new_pages", "overlong_new_pages", "missing_phrases",
+          "no_inbound_links"):
     v = issues[k]
     print("%-22s %d" % (k, len(v)), ("" if len(v) > 6 or not v else v))
