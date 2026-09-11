@@ -17,6 +17,7 @@ import dedupe_city  # noqa: E402
 import vat_note  # noqa: E402
 import tables  # noqa: E402
 import phrase_inserts  # noqa: E402
+import inbound_links  # noqa: E402
 import price_first  # noqa: E402
 import gsc_answers  # noqa: E402
 import dashes  # noqa: E402
@@ -55,6 +56,9 @@ pages = [content_fixes.apply(p) for p in pages]
 # after the corrections and before the tables are normalised: the
 # inserts add blocks, and tables.apply has to see the final set
 pages = [phrase_inserts.apply(p) for p in pages]
+# pages written after the migration need inbound links from prose, not
+# only from the templated related grid every page already carries
+pages = [inbound_links.apply(p) for p in pages]
 _tables_touched = tables.apply(pages)
 # national boilerplate moves to the page that owns it; local copy stays put
 pages = dedupe_city.apply(pages)

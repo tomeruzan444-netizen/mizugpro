@@ -42,7 +42,12 @@ issues = {"missing_pages": [], "extra_pages": [], "no_h1": [], "multi_h1": [],
           "no_title": [], "no_desc": [], "no_canonical": [], "bad_schema": [],
           "broken_links": [], "title_changed": [], "desc_changed": [],
           "canonical_changed": [], "empty_main": [], "img_no_dims": [],
-          "thin_new_pages": [], "missing_phrases": []}
+          "thin_new_pages": [], "missing_phrases": [], "no_inbound_links": []}
+
+# a new page must be linked to from inside another page's prose, not only from
+# the related grid every page carries. Collected across the whole crawl and
+# judged at the end, because a page cannot know who links to it.
+inbound = {p: set() for p in new_paths}
 
 issues["missing_pages"] = sorted(old_paths - set(built))
 issues["extra_pages"] = sorted(set(built) - old_paths)
@@ -51,16 +56,18 @@ BOILERPLATE = ".pagehero, .hero, .ctaband, .leadform, .actionbar, .rail, .review
 REPEATED_SECTIONS = {"פריסה ארצית", "קראו גם", "המלצות לקוחות", "מדריכים ושירותים"}
 
 
-def own_words(soup):
+def own_content(soup):
     """The page's own content: headings, prose, lists, tables and FAQ.
 
     Everything that repeats across the site is removed first. Counting the
     whole page instead would score a thin page at 760 on the strength of its
-    hero and its footer, which is exactly what the rule exists to catch.
+    hero and its footer, which is exactly what the rule exists to catch - and
+    the same stripping is what tells an editorial link apart from one the
+    related grid handed out.
     """
     main = soup.find("main")
     if not main:
-        return 0
+        return None
     clone = BeautifulSoup(str(main), "html.parser")
     for t in clone.find_all(["script", "style", "aside", "nav", "header",
                              "footer", "form"]):
@@ -71,6 +78,13 @@ def own_words(soup):
         eyebrow = sec.find(class_="section__eyebrow")
         if eyebrow and eyebrow.get_text(strip=True) in REPEATED_SECTIONS:
             sec.decompose()
+    return clone
+
+
+def own_words(soup):
+    clone = own_content(soup)
+    if clone is None:
+        return 0
     return len(re.sub(r"\s+", " ", clone.get_text(" ", strip=True)).split())
 
 for path, f in sorted(built.items()):
@@ -90,6 +104,13 @@ for path, f in sorted(built.items()):
         absent = [p for p in REQUIRED_PHRASES if not _says(p, body)]
         if absent:
             issues["missing_phrases"].append("%s: %s" % (path, ", ".join(absent)))
+
+    if inbound:
+        prose = own_content(soup)
+        for a in (prose.select("a[href^='/']") if prose else []):
+            href = urllib.parse.unquote(a["href"].split("#")[0])
+            if href in inbound and href != path:
+                inbound[href].add(path)
 
     h1s = soup.find_all("h1")
     if not h1s:
@@ -138,6 +159,11 @@ for path, f in sorted(built.items()):
         if not im.get("width") or not im.get("height"):
             issues["img_no_dims"].append({"path": path, "src": im.get("src", "")[:60]})
 
+for p, sources in sorted(inbound.items()):
+    if not sources:
+        issues["no_inbound_links"].append(
+            "%s (no link from inside another page's text)" % p)
+
 json.dump(issues, open(os.path.join(ROOT, "validation-report.json"), "w", encoding="utf-8"),
           ensure_ascii=False, indent=1)
 
@@ -147,6 +173,6 @@ for k in ("missing_pages", "extra_pages", "no_h1", "multi_h1", "no_title", "no_d
           "title_changed", "desc_changed", "canonical_changed",
           # the two that block a deploy - they belong on screen, not only in
           # the report file that only the workflow reads
-          "thin_new_pages", "missing_phrases"):
+          "thin_new_pages", "missing_phrases", "no_inbound_links"):
     v = issues[k]
     print("%-22s %d" % (k, len(v)), ("" if len(v) > 6 or not v else v))
