@@ -98,6 +98,42 @@ HEADING_REWRITES = {
     "/טכנאי-מזגנים-בסביון/": [
         ("בסביון- מידע", "בסביון – מידע"),
     ],
+    # an H2 on the פרדס חנה page carried the name of a town with its own page
+    "/טכנאי-מזגנים-בפרדס-חנה/": [
+        ("טכנאי מזגנים בקדימה צורן", "טכנאי מזגנים בפרדס חנה"),
+    ],
+}
+
+
+# Copy that should not have shipped: profanity, a political aside, chat
+# laughter, and a call to action naming the wrong town. Each rule is anchored
+# on enough surrounding words that it can only match the sentence it is meant
+# for, and each replacement keeps the sentence doing its original job.
+COPY_REWRITES = {
+    "/צינור-ניקוז-למזגן/": [
+        (re.compile(r"\(כן, גם למזגנים יש חרא בצינורות\)"),
+         "(כן, גם צינורות של מזגן נסתמים)"),
+    ],
+    "/התקנת-מזגן-בממד/": [
+        # also closes the sentence, which ran straight into the next one
+        (re.compile(r"זה קריטי במיוחד במדינה שאנחנו חיים בה ויש לנו עוד את "
+                    r"האירנים על הראש תוודאו"),
+         "זה קריטי במיוחד כשמדובר בחדר שכל תפקידו להגן עליכם. תוודאו"),
+    ],
+    # the same FAQ answer sits on two pages
+    "/המזגן-לא-מקרר/": [
+        (re.compile(r"קודם כל לא עלינו חח אבל"), "קודם כל, לא עלינו. אבל"),
+    ],
+    "/התקנת-מזגן-מיני-מרכזי/": [
+        (re.compile(r"קודם כל לא עלינו חח אבל"), "קודם כל, לא עלינו. אבל"),
+    ],
+    "/ניקוי-מיני-מרכזי/": [
+        (re.compile(r"את ביתם החדש חח\."), "את ביתם החדש."),
+    ],
+    "/טכנאי-מזגנים-בבית-שאן/": [
+        (re.compile(r"לטכנאי מזגנים בחדרה אמין ומקצועי"),
+         "לטכנאי מזגנים בבית שאן אמין ומקצועי"),
+    ],
 }
 
 
@@ -292,8 +328,21 @@ META_ADDITIONS = {
 }
 
 
+# "המחיר נבדק בקפידה לאחרונה בחודש בשנת" - the month and the year were never
+# filled in. A note whose whole purpose is to date the figures, carrying no
+# date, is worse than no note: it tells the reader the page was left unfinished.
+# Dropped rather than dated, because nobody knows when these were last checked.
+_UNFILLED_NOTE = re.compile(r"נבדק\s+בקפידה\s+לאחרונה\s+בחודש\s+בשנת\s*$")
+
+
 def fix_price_range(block, path):
-    """A price scale must ascend: low ≤ average ≤ high."""
+    """A price scale must ascend: low ≤ average ≤ high, and its note must say
+    something."""
+    note = (block.get("note") or "").strip()
+    if note and _UNFILLED_NOTE.search(note):
+        _log(path, "הערת תבנית שלא מולאה", note[:120], "(הוסרה)")
+        block["note"] = None
+
     pts = block.get("points") or []
     if len(pts) != 3:
         return block
@@ -462,7 +511,8 @@ def apply(page):
 
         # per-page price alignment and date refresh, on the rendered text
         for table, label in ((PRICE_ALIGNMENTS, "יישור מחיר סותר"),
-                             (DATE_FIXES, "תאריך מתיישן")):
+                             (DATE_FIXES, "תאריך מתיישן"),
+                             (COPY_REWRITES, "ניסוח שלא היה צריך לעלות")):
             for pattern, repl in table.get(path, []):
                 for key in ("html",):
                     if isinstance(b.get(key), str):
