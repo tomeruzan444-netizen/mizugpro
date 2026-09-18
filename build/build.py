@@ -60,6 +60,9 @@ pages = [phrase_inserts.apply(p) for p in pages]
 # pages written after the migration need inbound links from prose, not
 # only from the templated related grid every page already carries
 pages = [inbound_links.apply(p) for p in pages]
+# Search Console questions that belong in a page's own FAQ go in here, on the
+# page dict, so the FAQPage schema built from these blocks carries them too
+pages = [gsc_phrases.apply_faq(p) for p in pages]
 _tables_touched = tables.apply(pages)
 # national boilerplate moves to the page that owns it; local copy stays put
 pages = dedupe_city.apply(pages)
@@ -956,8 +959,11 @@ def main():
         # answers first, so the price table still lands after the second
         # paragraph once they are in place
         model["body"] = gsc_answers.apply(model["body"], p["path"])
-        model["body"] = gsc_phrases.apply(model["body"], p["path"])
         model["body"] = price_first.apply(model["body"], p["path"])
+        # after the table has moved: its "after:<heading>" anchors must see the
+        # final order, or an answer meant to sit under the price table stays
+        # behind where the table used to be
+        model["body"] = gsc_phrases.apply(model["body"], p["path"])
         model["body"] = vat_note.add(model["body"], p["path"])
         model["sidebar"] = sidebar_groups.sidebar_for(p["path"])
         model["related"] = RELATED.get(p["path"])
