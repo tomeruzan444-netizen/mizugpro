@@ -12,6 +12,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from icons import icon  # noqa: E402
 import content_fixes  # noqa: E402
+import content_dates  # noqa: E402
 import sidebar_groups  # noqa: E402
 import dedupe_city  # noqa: E402
 import vat_note  # noqa: E402
@@ -520,7 +521,7 @@ def _canonical_org_graph():
 ORG_GRAPH = _canonical_org_graph()
 
 
-def schema_strings(p, crumbs):
+def schema_strings(p, crumbs, body=None):
     out = []
     for doc in p.get("schema", []):
         if "_raw" in doc:
@@ -543,6 +544,12 @@ def schema_strings(p, crumbs):
         doc = json.loads(json.dumps(doc))  # deep copy
         if FIX_ORG_SCHEMA and isinstance(doc.get("@graph"), list):
             doc["@graph"] = [fix_org(n) for n in doc["@graph"]]
+        # the inherited dateModified stopped moving at the migration; replace
+        # it with the date this page's copy actually last changed
+        for node in (doc.get("@graph") or []):
+            if isinstance(node, dict) and node.get("dateModified"):
+                node["dateModified"] = content_dates.modified_for(
+                    p["path"], body, node["dateModified"])
         out.append(json.dumps(doc, ensure_ascii=False, separators=(",", ":")))
 
     # A page written after the migration has no inherited graph, so it would
@@ -968,7 +975,7 @@ def main():
         model["sidebar"] = sidebar_groups.sidebar_for(p["path"])
         model["related"] = RELATED.get(p["path"])
         model["related_label"] = RELATED_LABEL.get(p["path"])
-        model["schema"] = schema_strings(p, model["crumbs"])
+        model["schema"] = schema_strings(p, model["crumbs"], model["body"])
 
         if p["path"] == "/":
             model = build_home(p, model)
@@ -1102,6 +1109,8 @@ def main():
     print("broken links   :", len(report["broken_links"]))
     print("missing meta   :", len(report["missing_meta"]))
     print("schema repaired:", len(REPAIRED_SCHEMA), "pages")
+    content_dates.save()
+    print("dateModified bumped:", len(content_dates.CHANGED), "pages")
     print("content fixes  :", len(content_fixes.CHANGES))
     print("city de-dupe   :", len(dedupe_city.CHANGES), "blocks moved or trimmed")
     for rule, items in sorted(by_rule.items(), key=lambda kv: -len(kv[1])):
