@@ -82,6 +82,23 @@ LINKS = {
   '<a href="/טכנאי-מזגנים-בבאר-יעקב/">טכנאי מזגנים בבאר יעקב</a> מגיע מאותה '
   'משאית ובאותו זמן תגובה.')],
 
+ # ---- כוכב יאיר צור יגאל ------------------------------------------------
+ # Wikipedia gives its borders as Tzur Yitzhak, Eyal, Tira and the South
+ # Sharon Regional Council - none of which has a page here. So these two
+ # sentences say "in the eastern Sharon" and "a few minutes away", and claim
+ # no border that is not on the record.
+ "/טכנאי-מזגנים-בכפר-סבא/": [(
+  "ניסיון ומומחיות: צוות טכנאי מיזוג פרו מורכב",
+  ' אותו צוות עובד גם בשרון המזרחי, כמה דקות נסיעה מכאן - '
+  '<a href="/טכנאי-מזגנים-בכוכב-יאיר-צור-יגאל/">טכנאי מזגנים בכוכב יאיר צור '
+  'יגאל</a> מגיע מאותה משאית ועם אותו מחירון.')],
+
+ "/טכנאי-מזגנים-בתל-מונד/": [(
+  "מיזוג פרו מבינה שתקלות במזגן יכולות להתרחש בכל עת",
+  ' אותה זמינות תקפה גם ליישובי השרון המזרחי, וביניהם כוכב יאיר צור יגאל - '
+  '<a href="/טכנאי-מזגנים-בכוכב-יאיר-צור-יגאל/">טכנאי מזגנים בכוכב יאיר צור '
+  'יגאל</a> מקבל את אותו מענה ואת אותו זמן תגובה.')],
+
  # ---- קריית עקרון -------------------------------------------------------
  # borders Rehovot to its north (verified); Mazkeret Batya is "near" it with no
  # direction given, so that sentence says near and nothing more
