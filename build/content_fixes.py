@@ -30,6 +30,9 @@ TEXT_RULES = [
     ("איוורטר → אינוורטר", re.compile(r"(?<!א)איוורטר"), "אינוורטר"),
     ("והתרנה → וההתקנה", re.compile(r"והתרנה"), "וההתקנה"),
     ("טבלאת → טבלת", re.compile(r"\bטבלאת\b"), "טבלת"),
+    # the Netanya page opens with "טכנאי מזגנים בהתניה" - two letters swapped
+    # in the city's own name, on the page that ranks for it
+    ("בהתניה → בנתניה", re.compile(r"(?<![א-ת])בהתניה(?![א-ת])"), "בנתניה"),
     # a different company's name left over from the template this site was cloned from
     ("מותג זר בתוכן", re.compile(r"דודים וחוסכים"), "מיזוג פרו"),
     ("מותג זר בתוכן", re.compile(r"אלוף הגגות"), "מיזוג פרו"),

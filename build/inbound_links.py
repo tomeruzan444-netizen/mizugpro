@@ -82,6 +82,23 @@ LINKS = {
   '<a href="/טכנאי-מזגנים-בבאר-יעקב/">טכנאי מזגנים בבאר יעקב</a> מגיע מאותה '
   'משאית ובאותו זמן תגובה.')],
 
+ # ---- פרדסיה -------------------------------------------------------------
+ # both relations are on the record: Kfar Yona borders it to the north and
+ # east, and Pardesiya sits east of Netanya
+ "/טכנאי-מזגנים-בכפר-יונה/": [(
+  "במיזוג פרו אנו גאים בצוות טכנאי המזגנים המיומן והמנוסה שלנו",
+  ' פרדסיה גובלת בכפר יונה מדרום וממערב, ואותו צוות מכסה את שתיהן באותו יום '
+  '- <a href="/טכנאי-מזגנים-בפרדסיה/">טכנאי מזגנים בפרדסיה</a> מגיע מאותה '
+  'משאית ועם אותו מחירון.')],
+
+ "/טכנאי-מזגנים-בנתניה/": [(
+  # anchored before "איזור", which content_fixes corrects to "אזור" earlier
+  # in the pipeline - the longer anchor stopped matching and raised
+  "בין אם אתם צריכים טכנאי מזגנים בנתניה או בכל",
+  ' פרדסיה, למשל, שוכנת ממש ממזרח לנתניה, ו'
+  '<a href="/טכנאי-מזגנים-בפרדסיה/">טכנאי מזגנים בפרדסיה</a> יוצא לשתיהן '
+  'מאותה נקודה.')],
+
  # ---- כוכב יאיר צור יגאל ------------------------------------------------
  # Wikipedia gives its borders as Tzur Yitzhak, Eyal, Tira and the South
  # Sharon Regional Council - none of which has a page here. So these two
