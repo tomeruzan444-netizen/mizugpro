@@ -26,6 +26,15 @@ new_paths = ({p["path"] for p in json.load(open(NEW_PAGES, encoding="utf-8"))}
 # content and readers call a wall of text.
 MIN_WORDS, MAX_WORDS = 800, 1100
 
+# A blog article is held to a different band. A service or city page has to
+# cover a whole subject; a guide article answers one question, and padding it
+# to 800 words to satisfy a gate is the filler CONTENT-GUIDE.md forbids.
+ARTICLE_MIN, ARTICLE_MAX = 400, 900
+
+# Which new pages are articles rather than service pages
+ARTICLE_PATHS = {p["path"] for p in json.load(open(NEW_PAGES, encoding="utf-8"))
+                 if p.get("kind") == "article"} if os.path.exists(NEW_PAGES) else set()
+
 # The service phrases every city page carries. Two pages written after the
 # guide arrived without them, so the check moved out of anyone's memory.
 REQUIRED_PHRASES = ["תיקון מזגנים", "התקנת מזגן", "התקנת מזגנים",
@@ -106,19 +115,27 @@ for path, f in sorted(built.items()):
 
     if path in new_paths:
         words = own_words(soup)
-        if words < MIN_WORDS:
+        lo, hi = ((ARTICLE_MIN, ARTICLE_MAX) if path in ARTICLE_PATHS
+                  else (MIN_WORDS, MAX_WORDS))
+        if words < lo:
             issues["thin_new_pages"].append("%s (%d words, minimum %d)"
-                                            % (path, words, MIN_WORDS))
-        elif words > MAX_WORDS:
+                                            % (path, words, lo))
+        elif words > hi:
             issues["overlong_new_pages"].append("%s (%d words, maximum %d)"
-                                                % (path, words, MAX_WORDS))
+                                                % (path, words, hi))
         head = ((soup.title.get_text() if soup.title else "") + " "
                 + (soup.find("meta", {"name": "description"}) or {}).get("content", ""))
         body = head + " " + re.sub(r"\s+", " ", soup.find("main").get_text(" ")) \
             if soup.find("main") else head
-        absent = [p for p in REQUIRED_PHRASES if not _says(p, body)]
-        if absent:
-            issues["missing_phrases"].append("%s: %s" % (path, ", ".join(absent)))
+        # The six phrases are a ranking requirement for city and service
+        # pages. An article ranks for its own question, and forcing six
+        # commercial phrases into 500 words is the keyword stuffing
+        # GOOGLE-CONTENT-POLICY.md bans - so articles are exempt.
+        if path not in ARTICLE_PATHS:
+            absent = [p for p in REQUIRED_PHRASES if not _says(p, body)]
+            if absent:
+                issues["missing_phrases"].append(
+                    "%s: %s" % (path, ", ".join(absent)))
 
     # GOOGLE-CONTENT-POLICY.md: the prohibitions a machine can check.
     # Density is measured on prose only - a link list is a directory and a
