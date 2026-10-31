@@ -56,7 +56,10 @@ jobs:
           blocking = ["missing_pages", "no_h1", "no_title", "no_canonical",
                       "bad_schema", "broken_links", "empty_main",
                       "thin_new_pages", "overlong_new_pages", "missing_phrases",
-                      "no_inbound_links"]
+                      "no_inbound_links",
+                      # the standing rule for new content: original, and
+                      # able to name the source its facts came from
+                      "unoriginal_new_pages", "new_pages_without_sources"]
           failed = {k: len(report[k]) for k in blocking if report.get(k)}
           if failed:
               print("BLOCKING:", failed)

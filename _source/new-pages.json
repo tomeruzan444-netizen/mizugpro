@@ -135,7 +135,10 @@
     "text": "כמה עולה מזגן לשעה"
    }
   ],
-  "images": []
+  "images": [],
+  "sources": [
+   "https://he.wikipedia.org/wiki/רמת_השרון"
+  ]
  },
  {
   "url": "https://mizugpro.co.il/טכנאי-מזגנים-בבאר-יעקב/",
@@ -283,7 +286,10 @@
     "text": "תיקון מזגן מיני מרכזי"
    }
   ],
-  "images": []
+  "images": [],
+  "sources": [
+   "https://he.wikipedia.org/wiki/באר_יעקב"
+  ]
  },
  {
   "url": "https://mizugpro.co.il/טכנאי-מזגנים-באזור/",
@@ -443,7 +449,10 @@
     "text": "המזגן מרעיש"
    }
   ],
-  "images": []
+  "images": [],
+  "sources": [
+   "https://he.wikipedia.org/wiki/אזור"
+  ]
  },
  {
   "url": "https://mizugpro.co.il/טכנאי-מזגנים-בקריית-עקרון/",
@@ -589,7 +598,11 @@
     "text": "כמה עולה מזגן לשעה"
    }
   ],
-  "images": []
+  "images": [],
+  "sources": [
+   "https://he.wikipedia.org/wiki/קריית_עקרון",
+   "https://he.wikipedia.org/wiki/מזכרת_בתיה"
+  ]
  },
  {
   "url": "https://mizugpro.co.il/טכנאי-מזגנים-בכוכב-יאיר-צור-יגאל/",
@@ -735,7 +748,10 @@
     "text": "התקנת מזגנים"
    }
   ],
-  "images": []
+  "images": [],
+  "sources": [
+   "https://he.wikipedia.org/wiki/כוכב_יאיר"
+  ]
  },
  {
   "url": "https://mizugpro.co.il/טכנאי-מזגנים-בפרדסיה/",
@@ -891,7 +907,10 @@
     "text": "התקנת מזגנים"
    }
   ],
-  "images": []
+  "images": [],
+  "sources": [
+   "https://he.wikipedia.org/wiki/פרדסיה"
+  ]
  },
  {
   "url": "https://mizugpro.co.il/תקלות-וקודי-שגיאה-במזגנים/",
@@ -1058,6 +1077,10 @@
     "text": "התקנת מזגנים"
    }
   ],
-  "images": []
+  "images": [],
+  "sources": [
+   "CONTENT-GUIDE.md - הטבלה הקנונית (כל המחירים בעמוד)",
+   "ידע מקצועי בתחום המיזוג - משפחות ההגנה והאבחון. לא מצוטט מול תקן, ולכן אין בעמוד טבלת קודים או משמעות של קוד ספציפי"
+  ]
  }
 ]

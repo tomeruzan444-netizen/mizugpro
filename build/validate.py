@@ -4,6 +4,7 @@ import os, re, json, glob, urllib.parse
 from bs4 import BeautifulSoup
 
 import policy_check
+import originality
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -49,7 +50,11 @@ issues = {"missing_pages": [], "extra_pages": [], "no_h1": [], "multi_h1": [],
           "broken_links": [], "title_changed": [], "desc_changed": [],
           "canonical_changed": [], "empty_main": [], "img_no_dims": [],
           "thin_new_pages": [], "missing_phrases": [], "no_inbound_links": [],
-          "overlong_new_pages": [], "policy_violations": []}
+          "overlong_new_pages": [], "policy_violations": [],
+          "unoriginal_new_pages": [], "new_pages_without_sources": []}
+
+# own copy of every page, kept for the originality comparison at the end
+OWN_TEXT = {}
 
 # a new page must be linked to from inside another page's prose, not only from
 # the related grid every page carries. Collected across the whole crawl and
@@ -120,6 +125,7 @@ for path, f in sorted(built.items()):
     # price table is a table, and counting either inflates every short page.
     _own = own_content(soup)
     if _own is not None:
+        OWN_TEXT[path] = re.sub(r"\s+", " ", _own.get_text(" ", strip=True))
         _prose = own_content(soup)
         for _li in _prose.find_all("li"):
             _a = _li.find("a")
@@ -189,6 +195,13 @@ for path, f in sorted(built.items()):
         if not im.get("width") or not im.get("height"):
             issues["img_no_dims"].append({"path": path, "src": im.get("src", "")[:60]})
 
+# the owner's standing rule for content written from here on: original, and
+# grounded in a source it can name. Applies to new pages only - the migrated
+# ones would all fail, and they are deliberately left alone for now.
+issues["unoriginal_new_pages"] = originality.check_originality(new_paths, OWN_TEXT)
+issues["new_pages_without_sources"] = originality.check_sources(
+    json.load(open(NEW_PAGES, encoding="utf-8")) if os.path.exists(NEW_PAGES) else [])
+
 issues["policy_violations"] = [
     "%s | %s | %s" % (f["path"], f["kind"], f["rule"])
     for f in policy_check.FINDINGS]
@@ -208,6 +221,7 @@ for k in ("missing_pages", "extra_pages", "no_h1", "multi_h1", "no_title", "no_d
           # the two that block a deploy - they belong on screen, not only in
           # the report file that only the workflow reads
           "thin_new_pages", "overlong_new_pages", "missing_phrases",
-          "no_inbound_links", "policy_violations"):
+          "no_inbound_links", "policy_violations",
+          "unoriginal_new_pages", "new_pages_without_sources"):
     v = issues[k]
     print("%-22s %d" % (k, len(v)), ("" if len(v) > 6 or not v else v))
