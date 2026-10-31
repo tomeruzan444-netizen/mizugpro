@@ -355,6 +355,7 @@ button { font: inherit; }
 .cards--3 { grid-template-columns: repeat(3, 1fr); }
 .cards--2 { grid-template-columns: repeat(2, 1fr); }
 @media (max-width: 1020px) { .cards--4 { grid-template-columns: repeat(2, 1fr); } .cards--3 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .cards--4, .cards--3, .cards--2 { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .cards { grid-template-columns: 1fr !important; } }
 
 .card {
@@ -599,6 +600,16 @@ button { font: inherit; }
 }
 .prose strong { color: var(--ink); font-weight: 700; }
 .prose hr { border: 0; border-top: 1px solid var(--line); margin: var(--sp-6) 0; }
+
+/* index pages: the card grid and the chip row, inside prose */
+.prose .cards { margin: var(--sp-5) 0 var(--sp-7); }
+.prose .card p { font-size: 1rem; margin-bottom: var(--sp-4); }
+.prose .card a { text-decoration: none; font-weight: 700; }
+.prose .chips a { text-decoration: none; }
+.prose .chips { margin: var(--sp-4) 0 var(--sp-7); }
+.prose .chips > li { padding-inline-start: 0; }
+.prose .chips > li::before { content: none; }
+.chips--nav a { font-size: .98rem; }
 
 /* ---------- tables ------------------------------------------------------ */
 /* One treatment for all 148 tables: a real table on desktop, and on a phone

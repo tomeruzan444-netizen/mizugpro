@@ -21,7 +21,7 @@
 {% macro render(blocks) -%}
 {%- for b in blocks %}
   {%- if b.type == 'heading' %}
-<h{{ b.level }}>{{ b.html|safe }}</h{{ b.level }}>
+<h{{ b.level }}{% if b.id %} id="{{ b.id }}"{% endif %}>{{ b.html|safe }}</h{{ b.level }}>
 
   {%- elif b.type == 'paragraph' %}
 <p>{{ b.html|safe }}</p>
@@ -86,6 +86,22 @@
 
   {%- elif b.type == 'note' %}
 <p class="pricenote">{{ icon('info') }} {{ b.html }}</p>
+
+  {%- elif b.type == 'chipnav' %}
+<ul class="chips chips--nav">
+  {%- for l in b.links %}<li><a href="{{ l.href }}">{{ icon(l.icon) }} {{ l.text }}</a></li>{% endfor %}
+</ul>
+
+  {%- elif b.type == 'cardgrid' %}
+<div class="cards cards--{{ b.cols or 2 }}">
+  {%- for c in b['items'] %}
+  <article class="card card--link">
+    <h3><a href="{{ c.href }}">{{ c.title }}</a></h3>
+    <p>{{ c.text }}</p>
+    <span class="card__link">{{ c.cta or 'קראו עוד' }} {{ icon('arrow') }}</span>
+  </article>
+  {%- endfor %}
+</div>
 
   {%- elif b.type == 'custom_html' %}
 <div class="embed">{{ b.html|safe }}</div>

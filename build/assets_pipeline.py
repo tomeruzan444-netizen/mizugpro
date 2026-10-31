@@ -107,7 +107,11 @@ def build_webp():
 def minify_css(css):
     css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
     css = re.sub(r"\s+", " ", css)
-    css = re.sub(r"\s*([{}:;,>~])\s*", r"\1", css)
+    # ":" is deliberately out of this class. Stripping the space *before*
+    # a colon rewrites ".prose :is(...)" as ".prose:is(...)", which is a
+    # different selector - and usually one that matches nothing.
+    css = re.sub(r"\s*([{};,>~])\s*", r"\1", css)
+    css = re.sub(r":\s+", ":", css)
     css = re.sub(r";}", "}", css)
     return css.strip()
 

@@ -170,7 +170,13 @@
    "path": "/ריח-רע-מהמזגן/"
   }
  ],
- "canonical_changed": [],
+ "canonical_changed": [
+  {
+   "path": "/category/בלוג/",
+   "old": "https://mizugpro.co.il/category/%d7%91%d7%9c%d7%95%d7%92/",
+   "new": "https://mizugpro.co.il/%d7%91%d7%9c%d7%95%d7%92/"
+  }
+ ],
  "empty_main": [],
  "img_no_dims": [],
  "thin_new_pages": [],
