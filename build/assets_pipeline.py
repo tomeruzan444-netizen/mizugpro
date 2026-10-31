@@ -5,8 +5,10 @@ raster image, and minify CSS/JS. Run once before build.py (build.py picks up
 whatever this produced).
 """
 import os, re, json, io
-import requests
-from PIL import Image
+
+# requests and Pillow are imported inside the two functions that need
+# them: the deploy workflow installs only jinja2 and beautifulsoup4 and
+# calls minify(), which needs neither.
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -24,6 +26,7 @@ WEBP_Q = 82
 
 # ------------------------------------------------------------------ fonts ---
 def fetch_font():
+    import requests
     url = ("https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800"
            "&display=swap")
     css = requests.get(url, headers={"User-Agent": UA}, timeout=60).text
@@ -59,6 +62,7 @@ def fetch_font():
 
 # ------------------------------------------------------------------ images --
 def build_webp():
+    from PIL import Image
     manifest = {}
     for name in sorted(os.listdir(IMG)):
         if not name.lower().endswith((".png", ".jpg", ".jpeg")):
