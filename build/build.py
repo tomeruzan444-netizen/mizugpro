@@ -22,6 +22,7 @@ import inbound_links  # noqa: E402
 import price_first  # noqa: E402
 import gsc_answers  # noqa: E402
 import gsc_phrases  # noqa: E402
+import blog_sections  # noqa: E402
 import dashes  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -64,6 +65,8 @@ pages = [inbound_links.apply(p) for p in pages]
 # Search Console questions that belong in a page's own FAQ go in here, on the
 # page dict, so the FAQPage schema built from these blocks carries them too
 pages = [gsc_phrases.apply_faq(p) for p in pages]
+# the blog listing came over flat; sections are appended to it from one place
+pages = [blog_sections.apply(p) for p in pages]
 _tables_touched = tables.apply(pages)
 # national boilerplate moves to the page that owns it; local copy stays put
 pages = dedupe_city.apply(pages)
@@ -1103,6 +1106,7 @@ def main():
     print("dashes flattened:", dash_count, "in", dash_files, "files")
     print("search-question answers:", len(gsc_answers.CHANGES))
     print("search-phrase additions:", len(gsc_phrases.CHANGES))
+    print("blog sections added:", len(blog_sections.CHANGES))
     print("price tables moved up:", len(price_first.CHANGES))
     print("tables normalised:", _tables_touched)
     print("pages rendered :", len(report["pages"]))
