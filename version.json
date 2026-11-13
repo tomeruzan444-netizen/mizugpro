@@ -1,7 +1,7 @@
 {
- "commit": "5a37502201253f5fc9fcd7cf9bcf9734cf5b2dc8",
- "short": "5a37502",
- "built_at": "2026-11-13T12:46:52Z",
+ "commit": "ef7b5435040a4e9a0ff93a729c6ae6fdac238988",
+ "short": "ef7b543",
+ "built_at": "2026-11-13T13:51:01Z",
  "pages": 129,
- "built_by": "local"
+ "built_by": "github-actions"
 }
