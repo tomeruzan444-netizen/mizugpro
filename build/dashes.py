@@ -43,9 +43,16 @@ FIND = re.compile("[%s]" % "".join(DASHES))
 # style, and any script that is not structured data. JSON-LD is normalised
 # along with everything else — it restates the visible copy, so the two would
 # otherwise disagree.
+#
+# SVG path data is parked too. It is geometry, not copy: a relative segment
+# like "l 9 -5" looks to the range rule below like "9" and "5" with a dash
+# between them, and came out as "l 9 - 5" — which is not valid path data, so
+# the browser drops the whole shape. That cost the arrowheads on the first
+# infographic the site shipped, and it would cost them on every one after it.
 _SKIP = re.compile(
     r"(<style\b[^>]*>.*?</style>"
-    r"|<script\b(?![^>]*application/ld\+json)[^>]*>.*?</script>)",
+    r"|<script\b(?![^>]*application/ld\+json)[^>]*>.*?</script>"
+    r'|\sd="[^"]*")',
     re.S | re.I)
 
 TEXT_FILES = (".html", ".xml", ".txt", ".json", ".webmanifest")
