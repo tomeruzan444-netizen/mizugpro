@@ -160,7 +160,8 @@ LINKS = {
   'מסביר מה לספור.'),
   ("E1 אצל יצרן אחד",
    ' זה נכון גם בתוך אותו מותג: <a href="/קודי-שגיאה-מזגן-אלקטרה/">קודי '
-   'שגיאה מזגן אלקטרה</a> מסביר למה אין טבלה אחת לכל הדגמים.')],
+   'שגיאה מזגן אלקטרה</a> מסביר למה אין טבלה אחת לכל הדגמים.'),
+  ],
 
  # ---- קודי שגיאה אלקטרה --------------------------------------------------
  "/המזגן-לא-מקרר/": [(
@@ -174,6 +175,38 @@ LINKS = {
   ' השירות לא נעצר בגבול העיר: באר יעקב נמצאת כמה דקות נסיעה מלוד, ו'
   '<a href="/טכנאי-מזגנים-בבאר-יעקב/">טכנאי מזגנים בבאר יעקב</a> מקבל את אותו '
   'מענה ואת אותו מחירון.')],
+
+ # ---- קודי שגיאה תדיראן --------------------------------------------------
+ # Each sentence states what the Tadiran manuals actually showed, so it has a
+ # reason to be written where it sits: the Electra page is the brand with no
+ # public manuals, the hub is about what a code cannot tell you, and the
+ # flashing page is about units that report without a display at all.
+ "/קודי-שגיאה-מזגן-אלקטרה/": [(
+  "לכן כל טבלת",
+  ' אצל תדיראן המצב הפוך ושווה להשוות: החוברות שלה פומביות, ודווקא לכן רואים '
+  'בהן שחור על לבן שאותו קוד מקבל שתי משמעויות בשתי חוברות של אותה חברה. '
+  '<a href="/קודי-שגיאה-מזגן-תדיראן/">קודי שגיאה מזגן תדיראן</a> מראה את '
+  'ההשוואה.')],
+
+ # The hub page is the obvious third source and it cannot take the sentence:
+ # it already sits at 1,099 of the 1,100 words a new page may carry, so any
+ # insertion fails overlong_new_pages and blocks the deploy. The brand
+ # comparison page is a better home anyway - it is migrated, so it has no word
+ # ceiling, and whether a manufacturer publishes its manuals is a real
+ # criterion for choosing one. It is appended to the paragraph about Tadiran's
+ # service network, which is the same subject.
+ "/איזה-מזגן-הכי-טוב/": [(
+  "מערך השירות של תדיראן נחשב לאחד הטובים בענף",
+  ' נקודה שפחות מדברים עליה: תדיראן גם מעלה את חוברות ההפעלה שלה לאינטרנט '
+  'בעברית, כך שאפשר לבדוק מה קוד על הצג אומר בדגם מסוים. '
+  '<a href="/קודי-שגיאה-מזגן-תדיראן/">קודי שגיאה מזגן תדיראן</a> משווה בין '
+  'החוברות.')],
+
+ "/מזגן-מהבהב/": [(
+  "ההבהוב לא מצביע על רכיב",
+  ' בתדיראן זה נכון במיוחד בקו TADIRAN R, שבחוברת שלו אין פרק קודי תקלה בכלל '
+  'ולכן ההבהוב הוא כל מה שיש: <a href="/קודי-שגיאה-מזגן-תדיראן/">קודי שגיאה '
+  'מזגן תדיראן</a> מסביר אילו קווים כן מציגים קוד על הצג.')],
 }
 
 _TAGS = re.compile(r"<[^>]+>")
